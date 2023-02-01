@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=1900">
+  <title>TypeScript HTML App</title>
+  <style>
+    html,
+    body {
+      margin: 0;
+      overflow: hidden;
+    }
+
+    #labelDiv {
+      margin: auto;
+      width: 50%;
+      z-index: 1;
+    }
+
+    .row {
+      display: flex;
+    }
+
+    .column {
+      flex: 50%;
+    }
+  </style>
+  <!-- Pollyfill script -->
+  <script src="https://unpkg.com/core-js-bundle@3.6.1/minified.js"></script>
+  <!-- Live2DCubismCore script -->
+  <script src="Core/live2dcubismcore.js"></script>
+  <!-- Build script -->
+  <script src="./dist/bundle.js"></script>
+
+</head>
+
+<body>
+  <div id="labelDiv">.
+    <div class="row">
+      <div class="column">
+        <label for="openaiurl">Azure OpenAI Model Url:</label><br />
+        <input type="text" id="openaiurl" name="openaiurl" size="50"><br />
+        <label for="openaipikey">Azure OpenAI Model API Key:</label><br>
+        <input type="password" id="openaipikey" name="openaipikey" size="50"><br />
+        <label for="prompt">Prompt:</label><br>
+        <textarea id="prompt" name="prompt" rows="8" cols="50"></textarea>
+        <br />
+      </div>
+      <div class="column">
+        <label for="region">Azure Text to Speech Region:</label><br />
+        <input type="text" id="ttsregion" name="ttsregion" size="50"><br />
+        <label for="ttsapikey">Azure Text to Speech API Key:</label><br>
+        <input type="password" id="ttsapikey" name="ttsapikey" size="50"><br />
+        <label for="reply">Reply</label><br />
+        <textarea id="reply" name="reply" rows="8" cols="50" readonly>
+        </textarea>
+        <input type="hidden" id="conversations" name="conversations" size="50"><br />
+      </div>
+    </div>
+  </div>
+  <audio id="voice" />
+</body>
+
+</html>
