@@ -19,9 +19,9 @@ module.exports = async function (context, req) {
     //     text: "Hello from the API"
     // });
     context.log("Chat");
-    context.log(openaiurl);
-    context.log(openaipikey);
-
+    
+    const body = req.body;
+    context.log(body);
     const m = JSON.parse(req.body);
     context.log(m);
 

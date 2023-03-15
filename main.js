@@ -19,10 +19,6 @@ const copyClickCode = (ele) => {
   }
 };
 
-(async function() {
-  const { clientPrincipal } = await( await fetch(`/api/chatgpt`)).json();
-  console.log(clientPrincipal);
-}());
 
 $(document).ready(async () => {
   const { ip } = await $.getJSON("https://api.ipify.org?format=json");
