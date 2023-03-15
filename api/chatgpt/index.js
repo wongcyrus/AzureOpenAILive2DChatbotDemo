@@ -3,8 +3,7 @@ const openaiurl = "https://OPENAIDEMPOYMENT.openai.azure.com/openai/deployments/
 const openaipikey = "OPENAIPIKEY";
 
 
-module.exports = async function (context, req) {
-    context.log('JavaScript HTTP trigger function processed a request.');
+module.exports = async function (context, req) {  
 
     // const name = (req.query.name || (req.body && req.body.name));
     // const responseMessage = name
@@ -20,6 +19,8 @@ module.exports = async function (context, req) {
     //     text: "Hello from the API"
     // });
 
+    const m = JSON.parse(req.body);
+    context.log(m);
     const header = req.headers['x-ms-client-principal'];
     const encoded = Buffer.from(header, 'base64');
     const decoded = encoded.toString('ascii');
@@ -33,7 +34,7 @@ module.exports = async function (context, req) {
         body: JSON.stringify(m)
     });
     const json = await repsonse.json();
-
+    context.log(json);
     context.res.json(json);
 
 
