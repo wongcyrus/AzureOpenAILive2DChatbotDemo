@@ -52,6 +52,11 @@ jobs:
           sed -i "s/OPENAIDEMPOYMENT/${{ secrets.OPENAIDEMPOYMENT }}/g" api/chatgpt/index.js
           sed -i "s/OPENAIPIKEY/${{ secrets.OPENAIPIKEY }}/g" api/chatgpt/index.js
 
+      - uses: actions/setup-node@v2
+        with:
+          node-version: 16
+      - run: cd api/ && npm install
+
       - name: Build And Deploy
         id: builddeploy
         uses: Azure/static-web-apps-deploy@v1
