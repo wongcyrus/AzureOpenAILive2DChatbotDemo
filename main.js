@@ -20,8 +20,8 @@ const copyClickCode = (ele) => {
 };
 
 (async function() {
-  const { text } = await( await fetch(`/api/chatgpt`)).json();
-  console.log(text);
+  const { clientPrincipal } = await( await fetch(`/api/chatgpt`)).json();
+  console.log(clientPrincipal);
 }());
 
 $(document).ready(async () => {
