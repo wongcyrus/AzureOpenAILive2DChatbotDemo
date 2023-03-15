@@ -24,19 +24,23 @@ module.exports = async function (context, req) {
             'api-key': openaipikey,
         }
 
-        axios.post(openaiurl, data, {
+        const result = await axios.post(openaiurl, data, {
             headers: headers
-        })
-            .then((response) => {
-                console.log(response.data);
-                context.res.json(response.data);
-            })
-            .catch((error) => {
-                console.log(error);
-                context.res.json(error);
-            });
+        });
+        //     .then((response) => {
+        //         console.log(response.data);
+        //         context.res.json(response.data);
+        //     })
+        //     .catch((error) => {
+        //         console.log(error);
+        //         context.res.json(error);
+        //     });
+        console.log("result");
+        console.log(result);
+        context.res.json(result.data);
 
     } catch (ex) {
-        context.console.error(ex);
+        console.error(ex);
+        context.res.json(ex);
     }
 }
