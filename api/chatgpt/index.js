@@ -5,6 +5,10 @@ const openaipikey = "OPENAIPIKEY";
 
 module.exports = async function (context, req) {
 
+    context.res.json({
+        text: "Hello from the API"
+    });
+
     // const name = (req.query.name || (req.body && req.body.name));
     // const responseMessage = name
     //     ? "Hello, " + name + ". This HTTP triggered function executed successfully."
@@ -18,39 +22,39 @@ module.exports = async function (context, req) {
     // context.res.json({
     //     text: "Hello from the API"
     // });
-    context.log("Chat");
+    // context.log("Chat");
 
-    const body = req.body;
-    context.log(body);
-    // const m = JSON.parse(req.body);
-    // context.log(m);
+    // const body = req.body;
+    // context.log(body);
+    // // const m = JSON.parse(req.body);
+    // // context.log(m);
 
-    console.log("stringify");
-    context.log(JSON.stringify(body));
+    // console.log("stringify");
+    // context.log(JSON.stringify(body));
 
-    const header = req.headers['x-ms-client-principal'];
-    const encoded = Buffer.from(header, 'base64');
-    const decoded = encoded.toString('ascii');
+    // const header = req.headers['x-ms-client-principal'];
+    // const encoded = Buffer.from(header, 'base64');
+    // const decoded = encoded.toString('ascii');
 
-    try {
-        console.log("fetch");
-        const repsonse = await fetch(openaiurl, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'api-key': openaipikey,
-            },
-            body: JSON.stringify(body)
-        });
-        console.log("after fetch");
+    // try {
+    //     console.log("fetch");
+    //     const repsonse = await fetch(openaiurl, {
+    //         method: 'POST',
+    //         headers: {
+    //             'Content-Type': 'application/json',
+    //             'api-key': openaipikey,
+    //         },
+    //         body: JSON.stringify(body)
+    //     });
+    //     console.log("after fetch");
 
 
-        const json = await repsonse.json();
-        context.log(json);
-        context.res.json(json);
-    } catch (ex) {
-        context.console.error(ex);
-    }
+    //     const json = await repsonse.json();
+    //     context.log(json);
+    //     context.res.json(json);
+    // } catch (ex) {
+    //     context.console.error(ex);
+    // }
 
 
 
