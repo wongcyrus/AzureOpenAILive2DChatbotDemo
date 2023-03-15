@@ -22,8 +22,9 @@ module.exports = async function (context, req) {
     
     const body = req.body;
     context.log(body);
-    const m = JSON.parse(req.body);
-    context.log(m);
+    // const m = JSON.parse(req.body);
+    // context.log(m);
+    // context.log(JSON.stringify(body));
 
     const header = req.headers['x-ms-client-principal'];
     const encoded = Buffer.from(header, 'base64');
@@ -35,7 +36,7 @@ module.exports = async function (context, req) {
             'Content-Type': 'application/json',
             'api-key': openaipikey,
         },
-        body: JSON.stringify(m)
+        body: JSON.stringify(body)
     });
     const json = await repsonse.json();
     context.log(json);
