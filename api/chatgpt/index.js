@@ -17,21 +17,18 @@ module.exports = async function (context, req) {
     // const decoded = encoded.toString('ascii');
 
     try {
-
         const headers = {
             'Content-Type': 'application/json',
             'api-key': openaipikey,
         }
-
-        const result = await axios.post(openaiurl, body, {
+        const res = await axios.post(openaiurl, JSON.stringify(body), {
             headers: headers
         });
-
         context.log("result");
-        context.log(result);
-        context.res.json({
-            text: "ok"
-        });
+        context.log(res.data);
+        context.log(res.data.data);
+        context.log(res.data.json);
+        context.res.json(res.data.json);
 
     } catch (ex) {
         context.log(ex);
