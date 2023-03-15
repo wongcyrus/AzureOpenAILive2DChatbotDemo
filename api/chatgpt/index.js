@@ -3,7 +3,7 @@ const openaiurl = "https://OPENAIDEMPOYMENT.openai.azure.com/openai/deployments/
 const openaipikey = "OPENAIPIKEY";
 
 
-module.exports = async function (context, req) {  
+module.exports = async function (context, req) {
 
     // const name = (req.query.name || (req.body && req.body.name));
     // const responseMessage = name
@@ -19,7 +19,7 @@ module.exports = async function (context, req) {
     //     text: "Hello from the API"
     // });
     context.log("Chat");
-    
+
     const body = req.body;
     context.log(body);
     // const m = JSON.parse(req.body);
@@ -32,25 +32,26 @@ module.exports = async function (context, req) {
     const encoded = Buffer.from(header, 'base64');
     const decoded = encoded.toString('ascii');
 
-    console.log("fetch");
-    const repsonse = await fetch(openaiurl, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'api-key': openaipikey,
-        },
-        body: body
-    });
-    console.log("after fetch");
+    try {
+        console.log("fetch");
+        const repsonse = await fetch(openaiurl, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'api-key': openaipikey,
+            },
+            body: JSON.stringify(body)
+        });
+        console.log("after fetch");
 
-    try{
+
         const json = await repsonse.json();
         context.log(json);
         context.res.json(json);
-    }catch(ex){
+    } catch (ex) {
         context.console.error(ex);
     }
-    
+
 
 
     // context.res = {
