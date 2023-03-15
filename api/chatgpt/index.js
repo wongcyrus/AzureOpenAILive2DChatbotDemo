@@ -1,7 +1,8 @@
 
 const openaiurl = "https://OPENAIDEMPOYMENT.openai.azure.com/openai/deployments/gpt-35-tubo/completions?api-version=2022-12-01";
 const openaipikey = "OPENAIPIKEY";
-import { got } from 'got';
+
+const axios = require('axios');
 
 
 module.exports = async function (context, req) {
@@ -18,40 +19,24 @@ module.exports = async function (context, req) {
 
     try {
 
-        console.log("fetch");
-        // const repsonse = await fetch(openaiurl, {
-        //     method: 'POST',
-        //     headers: {
-        //         'Content-Type': 'application/json',
-        //         'api-key': openaipikey,
-        //     },
-        //     body: JSON.stringify(body)
-        // });
-        // console.log("after fetch");
+        const headers = {
+            'Content-Type': 'application/json',
+            'api-key': openaipikey,
+        }
 
-        const { data } = await got.post(openaiurl, {
-            headers: {
-                'Content-Type': 'application/json',
-                'api-key': openaipikey,
-            },
-            json: body
-        }).json();
+        axios.post(openaiurl, data, {
+            headers: headers
+        })
+            .then((response) => {
+                console.log(response.data);
+                context.res.json(response.data);
+            })
+            .catch((error) => {
+                console.log(error);
+                context.res.json(error);
+            });
 
-        context.res.json(data);
-
-
-        // const json = await repsonse.json();
-        // context.log(json);
-        // context.res.json(json);
     } catch (ex) {
         context.console.error(ex);
     }
-
-
-
-    // context.res = {
-    //     body: {
-    //         clientPrincipal: JSON.parse(decoded),
-    //     },
-    // };
 }
