@@ -10,7 +10,6 @@ module.exports = async function (context, req) {
 
     const body = req.body;
     context.log(body);
-    console.log("stringify");
     context.log(JSON.stringify(body));
 
     // const header = req.headers['x-ms-client-principal'];
@@ -24,25 +23,18 @@ module.exports = async function (context, req) {
             'api-key': openaipikey,
         }
 
-        const result = await axios.post(openaiurl, data, {
+        const result = await axios.post(openaiurl, body, {
             headers: headers
         });
-        //     .then((response) => {
-        //         console.log(response.data);
-        //         context.res.json(response.data);
-        //     })
-        //     .catch((error) => {
-        //         console.log(error);
-        //         context.res.json(error);
-        //     });
-        console.log("result");
-        console.log(result);
+
+        context.log("result");
+        context.log(result);
         context.res.json({
             text: "ok"
         });
 
     } catch (ex) {
-        console.log(ex);
+        context.log(ex);
         context.res.json({
             text: "error" + ex
         });
