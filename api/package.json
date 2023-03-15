@@ -2,13 +2,15 @@
   "name": "api",
   "version": "1.0.0",
   "description": "",
-  "type": "module",
+  "engines": {
+    "node": ">=16.0.0"
+  },
   "scripts": {
     "start": "func start",
     "test": "echo \"No tests yet...\""
   },
   "dependencies": {
-    "got": "^12.6.0",   
+    "got": "^12.6.0",
     "webm-to-wav-converter": "^1.1.0"
   }
 }
