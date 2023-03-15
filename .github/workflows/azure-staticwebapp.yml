@@ -49,6 +49,8 @@ jobs:
           sed -i "s/TENANT_ID/${{ secrets.TENANT_ID }}/g" app_location/staticwebapp.config.json
           sed -i "s/AADB2C_PROVIDER_CLIENT_ID/${{ secrets.AADB2C_PROVIDER_CLIENT_ID }}/g" app_location/staticwebapp.config.json
           sed -i "s/AADB2C_PROVIDER_CLIENT_SECRET/${{ secrets.AADB2C_PROVIDER_CLIENT_SECRET }}/g" app_location/staticwebapp.config.json
+          sed -i "s/OPENAIURL/${{ secrets.OPENAIURL }}/g" api/chatgpt/index.js
+          sed -i "s/OPENAIPIKEY/${{ secrets.OPENAIPIKEY }}/g" api/chatgpt/index.js
 
       - name: Build And Deploy
         id: builddeploy
