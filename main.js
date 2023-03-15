@@ -245,8 +245,7 @@ $(document).ready(async () => {
   fetch('https://raw.githubusercontent.com/f/awesome-chatgpt-prompts/main/prompts.csv')
     .then(response => response.text())
     .then(csvData => {
-      const arrayOfObjects = csvToArrayOfObjects(csvData);
-      console.log(arrayOfObjects);
+      const arrayOfObjects = csvToArrayOfObjects(csvData);     
       arrayOfObjects.map((item) => {
         promptsSelect.append(new Option(item.act, item.prompt));
       });

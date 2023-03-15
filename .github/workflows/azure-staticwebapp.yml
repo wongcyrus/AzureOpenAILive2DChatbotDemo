@@ -46,7 +46,8 @@ jobs:
 
       - name: Replace credentials
         run: |
-          find . -name "app_location/staticwebapp.config.json" -exec sed -i "s/AADB2C_PROVIDER_CLIENT_ID/${{ secrets.AADB2C_PROVIDER_CLIENT_ID }}/g" {} +
+          find . -name "app_location/staticwebapp.config.json" -exec sed -i "s/TENANT_ID/${{ secrets.TENANT_ID }}/g" {} +
+          sed -i "s/AADB2C_PROVIDER_CLIENT_ID/${{ secrets.AADB2C_PROVIDER_CLIENT_ID }}/g" {} +
           sed -i 's/AADB2C_PROVIDER_CLIENT_ID/${{ secrets.AADB2C_PROVIDER_CLIENT_ID }}/g' app_location/staticwebapp.config.json     
 
       - name: Build And Deploy
