@@ -18,6 +18,16 @@ const copyClickCode = (ele) => {
     }, nDelay);
   }
 };
+
+async function getUserInfo() {
+  const response = await fetch('/.auth/me');
+  const payload = await response.json();
+  const { clientPrincipal } = payload;
+  return clientPrincipal;
+}
+
+console.log(await getUserInfo());
+
 $(document).ready(async () => {
   const { ip } = await $.getJSON("https://api.ipify.org?format=json");
   document.cookie = "ip=" + ip;
