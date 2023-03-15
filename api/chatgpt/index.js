@@ -24,23 +24,33 @@ module.exports = async function (context, req) {
     context.log(body);
     // const m = JSON.parse(req.body);
     // context.log(m);
-    // context.log(JSON.stringify(body));
+
+    console.log("stringify");
+    context.log(JSON.stringify(body));
 
     const header = req.headers['x-ms-client-principal'];
     const encoded = Buffer.from(header, 'base64');
     const decoded = encoded.toString('ascii');
 
+    console.log("fetch");
     const repsonse = await fetch(openaiurl, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
             'api-key': openaipikey,
         },
-        body: JSON.stringify(body)
+        body: body
     });
-    const json = await repsonse.json();
-    context.log(json);
-    context.res.json(json);
+    console.log("after fetch");
+
+    try{
+        const json = await repsonse.json();
+        context.log(json);
+        context.res.json(json);
+    }catch(ex){
+        context.console.error(ex);
+    }
+    
 
 
     // context.res = {
