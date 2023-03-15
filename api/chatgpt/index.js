@@ -25,10 +25,8 @@ module.exports = async function (context, req) {
             headers: headers
         });
         context.log("result");
-        context.log(res.data);
-        context.log(res.data.data);
-        context.log(res.data.json);
-        context.res.json(res.data.json);
+        context.log(res.data);     
+        context.res.json(res.data);
 
     } catch (ex) {
         context.log(ex);
