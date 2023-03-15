@@ -1,9 +1,7 @@
 
 const openaiurl = "https://OPENAIDEMPOYMENT.openai.azure.com/openai/deployments/gpt-35-tubo/completions?api-version=2022-12-01";
 const openaipikey = "OPENAIPIKEY";
-
-
-import got from 'got';
+const got = require('got');
 
 
 module.exports = async function (context, req) {
