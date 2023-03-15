@@ -37,10 +37,14 @@ module.exports = async function (context, req) {
         //     });
         console.log("result");
         console.log(result);
-        context.res.json("ok");
+        context.res.json({
+            text: "ok"
+        });
 
     } catch (ex) {
-        console.error(ex);
-        context.res.json(ex);
+        console.log(ex);
+        context.res.json({
+            text: "error" + ex
+        });
     }
 }
