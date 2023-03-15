@@ -37,7 +37,7 @@ module.exports = async function (context, req) {
         //     });
         console.log("result");
         console.log(result);
-        context.res.json(result.data);
+        context.res.json("ok");
 
     } catch (ex) {
         console.error(ex);
