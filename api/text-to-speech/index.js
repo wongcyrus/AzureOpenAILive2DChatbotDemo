@@ -27,7 +27,7 @@ module.exports = async function (context, req) {
     const data = await res.data;
 
 
-    context.log("after data");
+    context.log(data);
 
 
     const blobName = "newblob" + new Date().getTime() + ".wav";
@@ -37,7 +37,8 @@ module.exports = async function (context, req) {
 
 
     context.res = {
-        body: `Hello ${blobName}`
+        headers: { 'content-type': 'audio/x-wav' },
+        body: data
     };
     context.done();
 
