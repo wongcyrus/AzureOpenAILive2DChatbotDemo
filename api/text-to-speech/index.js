@@ -27,9 +27,10 @@ module.exports = async function (context, req) {
         //     isRaw: true,
         //     body: res.data
         // };
-
+        context.log(res.data)
+        const b = Buffer.from(res.data);
         context.res.json({
-            body: res.data
+            body: b.toString()
         });
         // context.done();
 
