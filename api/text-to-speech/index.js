@@ -23,28 +23,28 @@ module.exports = async function (context, req) {
         context.log("res");
         context.log(res);
         context.log("res.data");
-        context.log(typeof(res.data));
-        context.log(typeof(res.data.length));
-        const data = res.data;
+        context.log(typeof res.data);
+        context.log(res.data.length);
+        const data = await res.data;
 
 
         context.log("after data");
 
-       
+
         const blobName = "newblob" + new Date().getTime() + ".wav";
         const blockBlobClient = containerClient.getBlockBlobClient(blobName);
         const uploadBlobResponse = await blockBlobClient.upload(data, data.length);
         context.log(`Upload block blob ${blobName} successfully`, uploadBlobResponse.requestId);
-        
 
-        return {        
+
+        return {
             body: blobName
         };
 
     } catch (ex) {
         context.log(ex);
-        context.res.json({
-            text: "error" + ex
-        });
+        return {
+            body: "error" + ex
+        };
     }
 }
