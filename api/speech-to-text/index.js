@@ -3,8 +3,8 @@ const ttsapikey = "TTSAPIKEY";
 
 module.exports = async function (context, req) {
     const language = req.query.language;
-    const body = req.body;
-
+    const body = req.body.replace(/^"(.*)"$/, '$1');
+   
     try {
         const headers = {
             'Content-Type': 'audio/wav; codecs=audio/pcm; samplerate=16000',
@@ -24,5 +24,5 @@ module.exports = async function (context, req) {
         context.res.json({
             text: "error" + ex
         });
-    }    
+    }
 }
