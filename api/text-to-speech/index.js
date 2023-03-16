@@ -19,15 +19,15 @@ module.exports = async function (context, req) {
     const res = await axios.post(`https://${ttsregion}.tts.speech.microsoft.com/cognitiveservices/v1`, body, {
         headers: headers
     });
-    context.log("res");
-    context.log(res);
-    context.log("res.data");
-    context.log(typeof res.data);
-    context.log(res.data.length);
-    const data = await res.data;
+    // context.log("res");
+    // context.log(res);
+    // context.log("res.data");
+    // context.log(typeof res.data);
+    // context.log(res.data.length);
+    // const data = await res.data;
 
 
-    context.log(data);
+    // context.log(data);
 
 
     // const blobName = "newblob" + new Date().getTime() + ".wav";
@@ -37,8 +37,8 @@ module.exports = async function (context, req) {
 
 
     context.res = {
-        headers: { 'content-type': 'audio/x-wav' },
-        body: data
+        headers: res.headers,
+        body: res.data
     };
     context.done();
 
