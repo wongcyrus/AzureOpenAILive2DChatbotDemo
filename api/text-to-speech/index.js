@@ -19,8 +19,11 @@ module.exports = async function (context, req) {
         context.log(res);
         context.log("res.data");
         context.log(typeof(res.data));
+        context.log(typeof(res.data.length));
         const data = res.data;
         context.log(data);
+
+        context.log("after data");
 
         // context.log(res.data)
         // context.res = {
