@@ -17,7 +17,8 @@ module.exports = async function (context, req) {
         'Ocp-Apim-Subscription-Key': ttsapikey,
     }
     const res = await axios.post(`https://${ttsregion}.tts.speech.microsoft.com/cognitiveservices/v1`, body, {
-        headers: headers
+        headers: headers,
+        responseType: "blob"
     });
     // context.log("res");
     context.log(res);
@@ -41,7 +42,6 @@ module.exports = async function (context, req) {
         headers: {
             "access-control-allow-origin": "*",
             "content-type": "audio/x-wav",
-
         },
         body: res.data
     };
