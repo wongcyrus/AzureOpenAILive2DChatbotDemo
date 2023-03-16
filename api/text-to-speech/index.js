@@ -6,7 +6,7 @@ const ttsregion = "TTSREGION";
 const ttsapikey = "TTSAPIKEY";
 
 const blobServiceClient = BlobServiceClient.fromConnectionString(storageAccountConnectionString);
-const containerClient = blobServiceClient.getContainerClient("voice");
+const containerClient = blobServiceClient.getContainerClient("$web");
 
 module.exports = async function (context, req) {
     let body = req.body;
@@ -31,10 +31,10 @@ module.exports = async function (context, req) {
         context.log("after data");
 
        
-        const blobName = "newblob" + new Date().getTime();
+        const blobName = "newblob" + new Date().getTime() + ".wav";
         const blockBlobClient = containerClient.getBlockBlobClient(blobName);
         const uploadBlobResponse = await blockBlobClient.upload(data, data.length);
-        console.log(`Upload block blob ${blobName} successfully`, uploadBlobResponse.requestId);
+        context.log(`Upload block blob ${blobName} successfully`, uploadBlobResponse.requestId);
 
         // context.log(res.data)
         // context.res = {
