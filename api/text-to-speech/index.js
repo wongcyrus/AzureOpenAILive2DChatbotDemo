@@ -6,10 +6,6 @@ const ttsapikey = "TTSAPIKEY";
 module.exports = async function (context, req) {
     let body = req.body;
 
-    // const header = req.headers['x-ms-client-principal'];
-    // const encoded = Buffer.from(header, 'base64');
-    // const decoded = encoded.toString('ascii');
-    // body = body.slice(1, -1).split(`\\n`).join('');
     try {
         const headers = {
             'Content-Type': 'application/ssml+xml',
@@ -19,6 +15,9 @@ module.exports = async function (context, req) {
         const res = await axios.post(`https://${ttsregion}.tts.speech.microsoft.com/cognitiveservices/v1`, body, {
             headers: headers
         });
+        context.log("res.data");
+        const data = res.data;
+        context.log(data);
 
         // context.log(res.data)
         // context.res = {
@@ -27,8 +26,9 @@ module.exports = async function (context, req) {
         //     isRaw: true,
         //     body: res.data
         // };
-        context.log(res.data)
+        
         const b = Buffer.from(res.data);
+        context.log("Buffer");
         context.res.json({
             body: b.toString()
         });
