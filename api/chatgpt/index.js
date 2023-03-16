@@ -10,7 +10,6 @@ module.exports = async function (context, req) {
 
     const body = req.body;
     context.log(body);
-    context.log(JSON.stringify(body));
 
     // const header = req.headers['x-ms-client-principal'];
     // const encoded = Buffer.from(header, 'base64');
@@ -24,7 +23,6 @@ module.exports = async function (context, req) {
         const res = await axios.post(openaiurl, JSON.stringify(body), {
             headers: headers
         });
-        context.log("result");
         context.log(res.data);     
         context.res.json(res.data);
 

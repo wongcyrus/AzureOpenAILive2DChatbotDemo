@@ -36,9 +36,14 @@ module.exports = async function (context, req) {
         const uploadBlobResponse = await blockBlobClient.upload(data, data.length);
         context.log(`Upload block blob ${blobName} successfully`, uploadBlobResponse.requestId);
         
-        context.res.json({
-            text: blobName
-        });
+        context.res.headers = { "Content-Type": "application/json" };
+        context.res.body = {
+            success: true,
+            message: blobName
+        };
+        // context.res.json({
+        //     text: blobName
+        // });
     
         // context.done();
 
