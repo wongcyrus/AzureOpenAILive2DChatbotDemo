@@ -1,7 +1,12 @@
 const axios = require('axios');
+const { BlobServiceClient } = require("@azure/storage-blob");
 
+const storageAccountConnectionString = "STORAGEACCOUNTCONNECTIONSTRING";
 const ttsregion = "TTSREGION";
 const ttsapikey = "TTSAPIKEY";
+
+const blobServiceClient = BlobServiceClient.fromConnectionString(storageAccountConnectionString);
+const containerClient = blobServiceClient.getContainerClient("voice");
 
 module.exports = async function (context, req) {
     let body = req.body;
@@ -21,9 +26,15 @@ module.exports = async function (context, req) {
         context.log(typeof(res.data));
         context.log(typeof(res.data.length));
         const data = res.data;
-        context.log(data);
+
 
         context.log("after data");
+
+       
+        const blobName = "newblob" + new Date().getTime();
+        const blockBlobClient = containerClient.getBlockBlobClient(blobName);
+        const uploadBlobResponse = await blockBlobClient.upload(data, data.length);
+        console.log(`Upload block blob ${blobName} successfully`, uploadBlobResponse.requestId);
 
         // context.log(res.data)
         // context.res = {
@@ -34,7 +45,7 @@ module.exports = async function (context, req) {
         // };
         
         context.res.json({
-            text: data
+            text: blobName
         });
     
         // context.done();

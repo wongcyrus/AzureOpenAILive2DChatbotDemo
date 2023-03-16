@@ -53,6 +53,7 @@ jobs:
           sed -i "s/OPENAIPIKEY/${{ secrets.OPENAIPIKEY }}/g" api/chatgpt/index.js
           sed -i "s/TTSREGION/${{ secrets.TTSREGION }}/g" api/text-to-speech/index.js
           sed -i "s/TTSAPIKEY/${{ secrets.TTSAPIKEY }}/g" api/text-to-speech/index.js
+          sed -i "s/STORAGEACCOUNTCONNECTIONSTRING/${{ secrets.STORAGEACCOUNTCONNECTIONSTRING }}/g" api/text-to-speech/index.js          
           sed -i "s/TTSREGION/${{ secrets.TTSREGION }}/g" api/speech-to-text/index.js
           sed -i "s/TTSAPIKEY/${{ secrets.TTSAPIKEY }}/g" api/speech-to-text/index.js
 
