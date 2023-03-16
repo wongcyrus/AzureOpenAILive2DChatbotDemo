@@ -30,7 +30,7 @@ module.exports = async function (context, req) {
         const b = Buffer.from(res.data);
         context.log("Buffer");
         context.res.json({
-            body: b.toString()
+            text: b.toString()
         });
         // context.done();
 
