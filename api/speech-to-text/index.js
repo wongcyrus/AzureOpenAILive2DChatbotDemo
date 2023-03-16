@@ -12,7 +12,8 @@ module.exports = async function (context, req) {
             'Accept': 'application/json;text/xml',
             'Ocp-Apim-Subscription-Key': ttsapikey,
         }
-        const res = await axios.post(`https://${ttsregion}.stt.speech.microsoft.com/speech/recognition/conversation/cognitiveservices/v1?language=${language}`,
+        const res = await axios.post(
+            `https://${ttsregion}.stt.speech.microsoft.com/speech/recognition/conversation/cognitiveservices/v1?language=${language}`,
             body, { headers: headers });
         context.res = {
             headers: { 'Content-Type': 'application/json' },

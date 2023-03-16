@@ -19,9 +19,11 @@ module.exports = async function (context, req) {
         const res = await axios.post(`https://${ttsregion}.tts.speech.microsoft.com/cognitiveservices/v1`, body, {
             headers: headers
         });
+
+        context.log(res)
         context.res = {
             headers: { 'Content-Type': 'application/json' },
-            body: res.body
+            body: new Blob([res.data])
         };
         context.done();
 
