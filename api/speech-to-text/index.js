@@ -3,11 +3,8 @@ const ttsapikey = "TTSAPIKEY";
 
 module.exports = async function (context, req) {
     const language = req.query.language;
-    let body = req.body;
+    let body = req.body;   
 
-    if (body.at(0) === '"' && body.at(-1) === '"') {
-        body = body.slice(1, -1).split(`\\n`).join('');
-    }
 
     try {
         const headers = {

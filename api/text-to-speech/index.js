@@ -4,12 +4,12 @@ const ttsregion = "TTSREGION";
 const ttsapikey = "TTSAPIKEY";
 
 module.exports = async function (context, req) {
-    const body = req.body;
+    let body = req.body;
 
     // const header = req.headers['x-ms-client-principal'];
     // const encoded = Buffer.from(header, 'base64');
     // const decoded = encoded.toString('ascii');
-
+    body = body.slice(1, -1).split(`\\n`).join('');
     try {
         const headers = {
             'Content-Type': 'application/ssml+xml',
