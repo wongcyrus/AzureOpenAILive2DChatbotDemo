@@ -22,8 +22,8 @@ module.exports = async function (context, req) {
 
         context.log(res)
         context.res = {
-            headers: { 'Content-Type': 'application/json' },
-            body: new Blob([res.data])
+            headers: { 'content-type': 'audio/x-wav' },
+            body: res.data
         };
         context.done();
 
