@@ -1,5 +1,5 @@
 
-const openaiurl = "https://eastus.api.cognitive.microsoft.com/openai/deployments/gpt-35-tubo/completions?api-version=2022-12-01";
+const openaiurl = "https://eastus.api.cognitive.microsoft.com/openai/deployments/OPENAIDEMPOYMENT/completions?api-version=2022-12-01";
 const openaipikey = "OPENAIPIKEY";
 
 const axios = require('axios');
@@ -10,10 +10,6 @@ module.exports = async function (context, req) {
 
     const body = req.body;
     context.log(body);
-
-    // const header = req.headers['x-ms-client-principal'];
-    // const encoded = Buffer.from(header, 'base64');
-    // const decoded = encoded.toString('ascii');
 
     try {
         const headers = {
