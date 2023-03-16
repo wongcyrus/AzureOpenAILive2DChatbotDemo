@@ -16,6 +16,10 @@ module.exports = async function (context, req) {
             headers: headers
         });
         context.log("res.data");
+        context.log(res);
+        
+        context.log(res);
+        context.log(typeof(res.data));
         const data = res.data;
         context.log(data);
 
