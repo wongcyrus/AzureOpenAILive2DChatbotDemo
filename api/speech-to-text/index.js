@@ -3,8 +3,12 @@ const ttsapikey = "TTSAPIKEY";
 
 module.exports = async function (context, req) {
     const language = req.query.language;
-    const body = req.body.replace(/^"(.*)"$/, '$1');
-   
+    let body = req.body;
+
+    if (body.at(0) === '"' && body.at(-1) === '"') {
+        body = body.slice(1, -1).split(`\\n`).join('');
+    }
+
     try {
         const headers = {
             'Content-Type': 'audio/wav; codecs=audio/pcm; samplerate=16000',
