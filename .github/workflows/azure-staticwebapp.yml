@@ -51,6 +51,10 @@ jobs:
           sed -i "s/AADB2C_PROVIDER_CLIENT_SECRET/${{ secrets.AADB2C_PROVIDER_CLIENT_SECRET }}/g" app_location/staticwebapp.config.json
           sed -i "s/OPENAIDEMPOYMENT/${{ secrets.OPENAIDEMPOYMENT }}/g" api/chatgpt/index.js
           sed -i "s/OPENAIPIKEY/${{ secrets.OPENAIPIKEY }}/g" api/chatgpt/index.js
+          sed -i "s/TTSREGION/${{ secrets.TTSREGION }}/g" api/text-to-speech/index.js
+          sed -i "s/TTSAPIKEY/${{ secrets.TTSAPIKEY }}/g" api/text-to-speech/index.js
+          sed -i "s/TTSREGION/${{ secrets.TTSREGION }}/g" api/speech-to-text/index.js
+          sed -i "s/TTSAPIKEY/${{ secrets.TTSAPIKEY }}/g" api/speech-to-text/index.js
 
       - uses: actions/setup-node@v2
         with:
