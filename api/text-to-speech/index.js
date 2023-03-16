@@ -35,14 +35,6 @@ module.exports = async function (context, req) {
         const blockBlobClient = containerClient.getBlockBlobClient(blobName);
         const uploadBlobResponse = await blockBlobClient.upload(data, data.length);
         context.log(`Upload block blob ${blobName} successfully`, uploadBlobResponse.requestId);
-
-        // context.log(res.data)
-        // context.res = {
-        //     status: 200, 
-        //     headers: { 'content-type': 'audio/x-wav' },
-        //     isRaw: true,
-        //     body: res.data
-        // };
         
         context.res.json({
             text: blobName
