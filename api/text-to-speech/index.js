@@ -20,14 +20,18 @@ module.exports = async function (context, req) {
             headers: headers
         });
 
-        context.log(res.data)
-        context.res = {
-            status: 200, 
-            headers: { 'content-type': 'audio/x-wav' },
-            isRaw: true,
+        // context.log(res.data)
+        // context.res = {
+        //     status: 200, 
+        //     headers: { 'content-type': 'audio/x-wav' },
+        //     isRaw: true,
+        //     body: res.data
+        // };
+
+        context.res.json({
             body: res.data
-        };
-        context.done();
+        });
+        // context.done();
 
     } catch (ex) {
         context.log(ex);
