@@ -20,7 +20,8 @@ module.exports = async function (context, req) {
         headers: headers
     });
     // context.log("res");
-    // context.log(res);
+    context.log(res);
+    context.log(res.headers);
     // context.log("res.data");
     // context.log(typeof res.data);
     // context.log(res.data.length);
@@ -37,7 +38,11 @@ module.exports = async function (context, req) {
 
 
     context.res = {
-        headers: res.headers,
+        headers: {
+            "access-control-allow-origin": "*",
+            "content-type": "audio/x-wav",
+
+        },
         body: res.data
     };
     context.done();
