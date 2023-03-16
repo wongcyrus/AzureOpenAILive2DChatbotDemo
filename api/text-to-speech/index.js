@@ -20,8 +20,9 @@ module.exports = async function (context, req) {
             headers: headers
         });
 
-        context.log(res)
+        context.log(res.data)
         context.res = {
+            status: 200, 
             headers: { 'content-type': 'audio/x-wav' },
             isRaw: true,
             body: res.data
