@@ -37,14 +37,15 @@ module.exports = async function (context, req) {
         context.log(`Upload block blob ${blobName} successfully`, uploadBlobResponse.requestId);
 
 
-        return {
+        context.res.json({
             body: blobName
-        };
+        });
+
 
     } catch (ex) {
         context.log(ex);
-        return {
-            body: "error" + ex
-        };
+        context.res.json({
+            body: "" + ex
+        });
     }
 }
