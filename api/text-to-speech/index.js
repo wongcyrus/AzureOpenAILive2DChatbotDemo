@@ -15,10 +15,9 @@ module.exports = async function (context, req) {
         const res = await axios.post(`https://${ttsregion}.tts.speech.microsoft.com/cognitiveservices/v1`, body, {
             headers: headers
         });
+        context.log("res");
+        context.log(res);
         context.log("res.data");
-        context.log(res);
-        
-        context.log(res);
         context.log(typeof(res.data));
         const data = res.data;
         context.log(data);
@@ -31,11 +30,10 @@ module.exports = async function (context, req) {
         //     body: res.data
         // };
         
-        const b = Buffer.from(res.data);
-        context.log("Buffer");
         context.res.json({
-            text: b.toString()
+            text: data
         });
+    
         // context.done();
 
     } catch (ex) {
