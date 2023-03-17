@@ -19,7 +19,7 @@ const textToSpeech = async (key, region, text, filename) => {
     return new Promise((resolve, reject) => {
 
         const speechConfig = sdk.SpeechConfig.fromSubscription(key, region);
-        speechConfig.speechSynthesisOutputFormat = 5; // mp3
+        speechConfig.speechSynthesisOutputFormat = 10; // riff-16khz-16bit-mono-pcm
 
         let audioConfig = null;
 
