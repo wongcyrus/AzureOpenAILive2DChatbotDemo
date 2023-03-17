@@ -1,7 +1,7 @@
 const axios = require('axios');
 const { BlobServiceClient } = require("@azure/storage-blob");
 const temp = require('temp');
-
+const fs = require('fs');
 
 const storageAccountConnectionString = "STORAGEACCOUNTCONNECTIONSTRING";
 const ttsregion = "TTSREGION";
@@ -41,20 +41,21 @@ module.exports = async function (context, req) {
     const uploadBlobResponse = await blockBlobClient.upload(data, data.length);
     context.log(`Upload block blob ${blobName} successfully`, uploadBlobResponse.requestId);
 
-    var tempName = temp.path({suffix: '.wav'}); 
+    var tempName = temp.path({ suffix: '.wav' });
     const audioStream = await textToSpeech(ttsapikey, ttsregion, body, tempName);
     await blockBlobClient.uploadFile(tempName);
 
     context.res = {
         status: 200,
         headers: {
-            "access-control-allow-origin": "*",           
+            "Content-Disposition": `attachment; filename=${blobName}`,
+            "access-control-allow-origin": "*",
             "content-type": "audio/x-wav",
         },
-        isRaw: true       
+        body: fs.readFileSync(tempName)
     };
-    audioStream.pipe(context.res);
-    // context.done();
+
+    context.done();
 
 
 }
