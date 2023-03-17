@@ -1,27 +1,39 @@
-// const temp = require('temp');
-// const fs = require('fs');
+const { BlobServiceClient } = require("@azure/storage-blob");
+const temp = require('temp');
+const fs = require('fs');
+const { textToSpeech } = require('./azure-cognitiveservices-speech');
 
 const ttsregion = "TTSREGION";
 const ttsapikey = "TTSAPIKEY";
 
+const storageAccountConnectionString = "STORAGEACCOUNTCONNECTIONSTRING";
+const blobServiceClient = BlobServiceClient.fromConnectionString(storageAccountConnectionString);
+const containerClient = blobServiceClient.getContainerClient("$web");
 
-const { textToSpeech } = require('./azure-cognitiveservices-speech');
 
 module.exports = async function (context, req) {
     let body = req.body;
 
     context.log(body);
-    // var tempName = temp.path({ suffix: '.wav' });
-    // ;
+
+    const blobName = "newblob" + new Date().getTime() + ".wav";
+    const blockBlobClient = containerClient.getBlockBlobClient(blobName);
+    const uploadBlobResponse = await blockBlobClient.upload(data, data.length);    
+
+    var tempName = temp.path({suffix: '.wav'}); 
+    await textToSpeech(ttsapikey, ttsregion, body, tempName);
+    await blockBlobClient.uploadFile(tempName);
+
+    context.log(`Upload block blob ${blobName} successfully`, uploadBlobResponse.requestId);
 
     context.res = {
         status: 200,
-        headers: {
-            "Content-Disposition": `attachment; filename=voice.wav`,
+        headers: {          
             "access-control-allow-origin": "*",
             "content-type": "audio/x-wav",
         },
-        body: await textToSpeech(ttsapikey, ttsregion, body)
+        isRaw: true,
+        body: fs.readFileSync(tempName)
     };
     context.done();
 }
