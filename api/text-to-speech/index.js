@@ -1,12 +1,12 @@
 const axios = require('axios');
-// const { BlobServiceClient } = require("@azure/storage-blob");
+const { BlobServiceClient } = require("@azure/storage-blob");
 
-// const storageAccountConnectionString = "STORAGEACCOUNTCONNECTIONSTRING";
+const storageAccountConnectionString = "STORAGEACCOUNTCONNECTIONSTRING";
 const ttsregion = "TTSREGION";
 const ttsapikey = "TTSAPIKEY";
 
-// const blobServiceClient = BlobServiceClient.fromConnectionString(storageAccountConnectionString);
-// // const containerClient = blobServiceClient.getContainerClient("$web");
+const blobServiceClient = BlobServiceClient.fromConnectionString(storageAccountConnectionString);
+const containerClient = blobServiceClient.getContainerClient("$web");
 
 module.exports = async function (context, req) {
     let body = req.body;
@@ -32,17 +32,19 @@ module.exports = async function (context, req) {
     // context.log(data);
 
 
-    // const blobName = "newblob" + new Date().getTime() + ".wav";
-    // const blockBlobClient = containerClient.getBlockBlobClient(blobName);
-    // const uploadBlobResponse = await blockBlobClient.upload(data, data.length);
-    // context.log(`Upload block blob ${blobName} successfully`, uploadBlobResponse.requestId);
+    const blobName = "newblob" + new Date().getTime() + ".wav";
+    const blockBlobClient = containerClient.getBlockBlobClient(blobName);
+    const uploadBlobResponse = await blockBlobClient.upload(data, data.length);
+    context.log(`Upload block blob ${blobName} successfully`, uploadBlobResponse.requestId);
 
 
     context.res = {
+        status: 200,
         headers: {
-            "access-control-allow-origin": "*",
+            "access-control-allow-origin": "*",           
             "content-type": "audio/x-wav",
         },
+        isRaw: true,
         body: res.data
     };
     context.done();
