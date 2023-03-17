@@ -1,6 +1,5 @@
-const axios = require('axios');
-const temp = require('temp');
-const fs = require('fs');
+// const temp = require('temp');
+// const fs = require('fs');
 
 const ttsregion = "TTSREGION";
 const ttsapikey = "TTSAPIKEY";
@@ -12,8 +11,8 @@ module.exports = async function (context, req) {
     let body = req.body;
 
     context.log(body);
-    var tempName = temp.path({ suffix: '.wav' });
-    await textToSpeech(ttsapikey, ttsregion, body, tempName);
+    // var tempName = temp.path({ suffix: '.wav' });
+    // ;
 
     context.res = {
         status: 200,
@@ -22,7 +21,7 @@ module.exports = async function (context, req) {
             "access-control-allow-origin": "*",
             "content-type": "audio/x-wav",
         },
-        body: fs.readFileSync(tempName)
+        body: await textToSpeech(ttsapikey, ttsregion, body)
     };
     context.done();
 }
