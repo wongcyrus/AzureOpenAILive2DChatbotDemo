@@ -1,5 +1,7 @@
 const axios = require('axios');
 const { BlobServiceClient } = require("@azure/storage-blob");
+const temp = require('temp');
+
 
 const storageAccountConnectionString = "STORAGEACCOUNTCONNECTIONSTRING";
 const ttsregion = "TTSREGION";
@@ -7,6 +9,8 @@ const ttsapikey = "TTSAPIKEY";
 
 const blobServiceClient = BlobServiceClient.fromConnectionString(storageAccountConnectionString);
 const containerClient = blobServiceClient.getContainerClient("$web");
+
+const { textToSpeech } = require('./azure-cognitiveservices-speech');
 
 module.exports = async function (context, req) {
     let body = req.body;
@@ -37,6 +41,9 @@ module.exports = async function (context, req) {
     const uploadBlobResponse = await blockBlobClient.upload(data, data.length);
     context.log(`Upload block blob ${blobName} successfully`, uploadBlobResponse.requestId);
 
+    var tempName = temp.path({suffix: '.wav'}); 
+    const audioStream = await textToSpeech(ttsapikey, ttsregion, body, tempName);
+    await blockBlobClient.uploadFile(tempName);
 
     context.res = {
         status: 200,
@@ -44,10 +51,10 @@ module.exports = async function (context, req) {
             "access-control-allow-origin": "*",           
             "content-type": "audio/x-wav",
         },
-        isRaw: true,
-        body: res.data
+        isRaw: true       
     };
-    context.done();
+    audioStream.pipe(context.res);
+    // context.done();
 
 
 }
