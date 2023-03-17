@@ -13,12 +13,20 @@ const fs = require('fs');
  * @param {*} text text to convert to audio/speech
  * @param {*} filename optional - best for long text - temp file for converted speech/audio
  */
-const textToSpeech = async (key, endpoint, text, filename) => {
+const textToSpeech = async (key, speechRegion, text, filename) => {
+    const headers = {
+        headers: {
+            'Ocp-Apim-Subscription-Key': key,
+            'Content-Type': 'application/x-www-form-urlencoded'
+        }
+    };
+    const tokenResponse = await axios.post(`https://${speechRegion}.api.cognitive.microsoft.com/sts/v1.0/issueToken`, null, headers);
+
 
     // convert callback function to promise
     return new Promise((resolve, reject) => {
 
-        const speechConfig = sdk.SpeechConfig.fromEndpoint(endpoint, key);
+        const speechConfig = sdk.SpeechConfig.fromAuthorizationToken(tokenResponse.data, speechRegion);
         speechConfig.speechSynthesisOutputFormat = 11; // riff-16khz-16bit-mono-pcm
 
         let audioConfig = null;
