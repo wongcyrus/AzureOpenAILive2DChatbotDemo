@@ -1,5 +1,3 @@
-// azure-cognitiveservices-speech.js
-
 const sdk = require('microsoft-cognitiveservices-speech-sdk');
 const { Buffer } = require('buffer');
 const { PassThrough } = require('stream');
