@@ -3,10 +3,9 @@ const temp = require('temp');
 const fs = require('fs');
 const { textToSpeech } = require('./azure-cognitiveservices-speech');
 
-const ttsregion = "TTSREGION";
-const ttsapikey = "TTSAPIKEY";
-
-const storageAccountConnectionString = "STORAGEACCOUNTCONNECTIONSTRING";
+const ttsregion = process.env.ttsregion;
+const ttsapikey = process.env.ttsapikey;
+const storageAccountConnectionString = process.env.chatStorageAccountConnectionString;
 
 const blobServiceClient = BlobServiceClient.fromConnectionString(storageAccountConnectionString);
 const containerClient = blobServiceClient.getContainerClient("$web");

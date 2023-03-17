@@ -1,13 +1,10 @@
-
-const openaiurl = "https://eastus.api.cognitive.microsoft.com/openai/deployments/OPENAIDEMPOYMENT/completions?api-version=2022-12-01";
-const openaipikey = "OPENAIPIKEY";
-
 const axios = require('axios');
 
+const openaiurl = `https://eastus.api.cognitive.microsoft.com/openai/deployments/${process.env.openAiCognitiveDeploymentName}/completions?api-version=2022-12-01`;
+const openaipikey = process.env.openAiCognitiveAccount;
 
 module.exports = async function (context, req) {
     context.log("Chat");
-
     const body = req.body;
     context.log(body);
 
@@ -19,7 +16,7 @@ module.exports = async function (context, req) {
         const res = await axios.post(openaiurl, JSON.stringify(body), {
             headers: headers
         });
-        context.log(res.data);     
+        context.log(res.data);
         context.res.json(res.data);
 
     } catch (ex) {
