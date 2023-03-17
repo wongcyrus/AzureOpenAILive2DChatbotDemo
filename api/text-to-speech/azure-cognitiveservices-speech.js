@@ -4,6 +4,7 @@ const sdk = require('microsoft-cognitiveservices-speech-sdk');
 const { Buffer } = require('buffer');
 const { PassThrough } = require('stream');
 const fs = require('fs');
+const axios = require('axios');
 
 /**
  * Node.js server code to convert text to speech
