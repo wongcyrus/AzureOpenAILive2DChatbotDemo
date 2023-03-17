@@ -20,30 +20,11 @@ module.exports = async function (context, req) {
         'X-Microsoft-OutputFormat': 'riff-8khz-16bit-mono-pcm',
         'Ocp-Apim-Subscription-Key': ttsapikey,
     }
-    const res = await axios.post(`https://${ttsregion}.tts.speech.microsoft.com/cognitiveservices/v1`, body, {
-        headers: headers,
-        responseType: "blob"
-    });
-    // context.log("res");
-    context.log(res);
-    context.log(res.headers);
-    // context.log("res.data");
-    // context.log(typeof res.data);
-    // context.log(res.data.length);
-    const data = res.data;
 
-
-    // context.log(data);
-
-
-    const blobName = "newblob" + new Date().getTime() + ".wav";
-    const blockBlobClient = containerClient.getBlockBlobClient(blobName);
-    const uploadBlobResponse = await blockBlobClient.upload(data, data.length);
-    context.log(`Upload block blob ${blobName} successfully`, uploadBlobResponse.requestId);
 
     var tempName = temp.path({ suffix: '.wav' });
-    const audioStream = await textToSpeech(ttsapikey, ttsregion, body, tempName);
-    await blockBlobClient.uploadFile(tempName);
+    await textToSpeech(ttsapikey, ttsregion, body, tempName);
+   
 
     context.res = {
         status: 200,

@@ -29,20 +29,15 @@ const textToSpeech = async (key, region, text, filename) => {
 
         const synthesizer = new sdk.SpeechSynthesizer(speechConfig, audioConfig);
 
-        synthesizer.speakTextAsync(
+        synthesizer.speakSsmlAsync(
             text,
             result => {
-
                 const { audioData } = result;
-
                 synthesizer.close();
-
                 if (filename) {
-
                     // return stream from file
                     const audioFile = fs.createReadStream(filename);
                     resolve(audioFile);
-
                 } else {
 
                     // return stream from memory
