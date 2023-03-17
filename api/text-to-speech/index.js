@@ -3,8 +3,8 @@ const temp = require('temp');
 const fs = require('fs');
 const { textToSpeech } = require('./azure-cognitiveservices-speech');
 
-const ttsregion = process.env.ttsregion;
-const ttsapikey = process.env.ttsapikey;
+const ttsEndpoint = process.env.ttsEndpoint;
+const ttsapikey = process.env.ttsApiKey;
 const storageAccountConnectionString = process.env.chatStorageAccountConnectionString;
 
 const blobServiceClient = BlobServiceClient.fromConnectionString(storageAccountConnectionString);
@@ -21,7 +21,7 @@ module.exports = async function (context, req) {
 
 
     const tempName = temp.path({ suffix: '.wav' });
-    await textToSpeech(ttsapikey, ttsregion, body, tempName);
+    await textToSpeech(ttsapikey, ttsEndpoint, body, tempName);
 
     const uploadBlobResponse = await blockBlobClient.uploadFile(tempName);
     context.log(`Upload block blob ${blobName} successfully`, uploadBlobResponse.requestId);

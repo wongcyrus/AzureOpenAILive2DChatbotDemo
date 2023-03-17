@@ -13,12 +13,12 @@ const fs = require('fs');
  * @param {*} text text to convert to audio/speech
  * @param {*} filename optional - best for long text - temp file for converted speech/audio
  */
-const textToSpeech = async (key, region, text, filename) => {
+const textToSpeech = async (key, endpoint, text, filename) => {
 
     // convert callback function to promise
     return new Promise((resolve, reject) => {
 
-        const speechConfig = sdk.SpeechConfig.fromSubscription(key, region);
+        const speechConfig = sdk.SpeechConfig.fromEndpoint(endpoint, key);
         speechConfig.speechSynthesisOutputFormat = 11; // riff-16khz-16bit-mono-pcm
 
         let audioConfig = null;
