@@ -15,18 +15,14 @@ module.exports = async function (context, req) {
     var tempName = temp.path({ suffix: '.wav' });
     await textToSpeech(ttsapikey, ttsregion, body, tempName);
 
-
     context.res = {
         status: 200,
         headers: {
-            "Content-Disposition": `attachment; filename=${blobName}`,
+            "Content-Disposition": `attachment; filename=voice.wav`,
             "access-control-allow-origin": "*",
             "content-type": "audio/x-wav",
         },
         body: fs.readFileSync(tempName)
     };
-
     context.done();
-
-
 }
