@@ -21,15 +21,15 @@ module.exports = async function (context, req) {
     const blockBlobClient = containerClient.getBlockBlobClient(blobName);
 
 
-    const tempName = temp.path({suffix: '.wav'}); 
+    const tempName = temp.path({ suffix: '.wav' });
     await textToSpeech(ttsapikey, ttsregion, body, tempName);
-    
-    await blockBlobClient.uploadFile(tempName);    
+
+    const uploadBlobResponse = await blockBlobClient.uploadFile(tempName);
     context.log(`Upload block blob ${blobName} successfully`, uploadBlobResponse.requestId);
 
     context.res = {
         status: 200,
-        headers: {          
+        headers: {
             "access-control-allow-origin": "*",
             "content-type": "audio/x-wav",
         },
