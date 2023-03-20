@@ -19,6 +19,22 @@ const copyClickCode = (ele) => {
   }
 };
 $(document).ready(async () => {
+
+  async function getUser() {
+    const response = await fetch('/api/user');
+    const payload = await response.json();
+    const { clientPrincipal } = payload;
+    return clientPrincipal;
+  }
+
+  try {
+    const user = await getUser();
+    console.log(user);
+  }
+  catch (ex) {
+    $("#logout").hide();
+  }
+
   const md = markdownit({
     highlight: function (str, lang) { // markdown高亮
       try {
