@@ -1,5 +1,8 @@
 const { BlobServiceClient } = require("@azure/storage-blob");
 const axios = require('axios');
+const { speechToText } = require("./speechToText");
+const temp = require('temp');
+const fs = require('fs');
 
 const speechRegion = process.env.speechRegion;
 const ttsApiKey = process.env.ttsApiKey;
@@ -19,14 +22,12 @@ const getEmail = (req) => {
 
 module.exports = async function (context, req) {
     const language = req.query.language;
-    let body = req.body;
 
     try {
         const bodyBuffer = new Uint8Array(Buffer.from(req.body, 'binary'));
 
-        // const bodyBuffer = Buffer.from(req.body);
-        // const boundary = multipart.getBoundary(req.headers["content-type"]);
-        // const parts = multipart.Parse(bodyBuffer, boundary);
+        const tempName = temp.path({ suffix: '.wav' });
+        fs.writeFileSync(tempName, bodyBuffer);
 
         const email = getEmail(req);
         const blobName = email.replace(/[^a-zA-Z0-9 ]/g, '') + "-stt.wav";
@@ -34,14 +35,16 @@ module.exports = async function (context, req) {
         const uploadBlobResponse = await blockBlobClient.uploadData(bodyBuffer);
         context.log(`Upload block blob ${blobName} successfully`, uploadBlobResponse.requestId);
 
-        const headers = {
-            'Content-Type': 'audio/wav; codecs=audio/pcm; samplerate=16000',
-            'Accept': 'application/json;text/xml',
-            'Ocp-Apim-Subscription-Key': ttsApiKey,
-        }
-        const res = await axios.post(
-            `https://${speechRegion}.stt.speech.microsoft.com/speech/recognition/conversation/cognitiveservices/v1?language=${language}`,
-            bodyBuffer, { headers: headers });
+        const res = speechToText(ttsApiKey, speechRegion, tempName, language);
+        context.log(res);
+        // const headers = {
+        //     'Content-Type': 'audio/wav; codecs=audio/pcm; samplerate=16000',
+        //     'Accept': 'application/json;text/xml',
+        //     'Ocp-Apim-Subscription-Key': ttsApiKey,
+        // }
+        // const res = await axios.post(
+        //     `https://${speechRegion}.stt.speech.microsoft.com/speech/recognition/conversation/cognitiveservices/v1?language=${language}`,
+        //     bodyBuffer, { headers: headers });
 
         context.res = {
             headers: { 'Content-Type': 'application/json' },
