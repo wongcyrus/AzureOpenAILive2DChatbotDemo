@@ -1,6 +1,6 @@
-const fs = require("fs");
-const sdk = require("microsoft-cognitiveservices-speech-sdk");
-
+const sdk = require('microsoft-cognitiveservices-speech-sdk');
+const fs = require('fs');
+const axios = require('axios');
 
 const speechToText = async (key, speechRegion, filename, language) => {
     const headers = {
