@@ -7,7 +7,7 @@ const chatStorageAccountConnectionString = process.env.chatStorageAccountConnect
 
 const chatHistoryTableClient = TableClient.fromConnectionString(chatStorageAccountConnectionString, "chatHistory");
 
-const getEmail = (res) => {
+const getEmail = (req) => {
     const header = req.headers['x-ms-client-principal'];
     const encoded = Buffer.from(header, 'base64');
     const decoded = encoded.toString('ascii');
