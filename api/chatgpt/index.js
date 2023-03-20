@@ -31,10 +31,12 @@ module.exports = async function (context, req) {
         context.log(res.data);
 
         const now = new Date();
-        var ticks = ((now.getTime() * 10000) + 621355968000000000);
+        const ticks = ((now.getTime() * 10000) + 621355968000000000n);
+        const email = getEmail(req);
         const chatEntity = {
-            partitionKey: getEmail(req),
+            partitionKey: email.replace(/[^a-zA-Z0-9 ]/g, ''),
             rowKey: ticks,
+            email: email,
             student: body.prompt,
             chatbot: res.data.choices[0].text,
             tokens: res.data.usage.total_tokens,
