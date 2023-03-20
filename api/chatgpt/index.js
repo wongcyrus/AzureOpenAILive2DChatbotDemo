@@ -30,12 +30,13 @@ module.exports = async function (context, req) {
         });
         context.log(res.data);
 
-        const s = prompt.split(`<|im_end|>`);
+        const s = body.prompt.split(`<|im_end|>`);
         const quertion = s[s.length - 2].replace("<|im_start|>", "");
 
         const now = new Date();
         const ticks = BigInt(now.getTime());
         const email = getEmail(req);
+   
         const chatEntity = {
             PartitionKey: email.replace(/[^a-zA-Z0-9 ]/g, ''),
             RowKey: ticks,
