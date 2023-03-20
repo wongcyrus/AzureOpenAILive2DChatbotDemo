@@ -42,8 +42,7 @@ module.exports = async function (context, req) {
             Email: email,
             Student: quertion,
             Chatbot: res.data.choices[0].text,
-            Tokens: res.data.usage.total_tokens,
-            At: now
+            Tokens: res.data.usage.total_tokens,           
         };
         context.log(chatEntity);
         await chatHistoryTableClient.createEntity(chatEntity);
