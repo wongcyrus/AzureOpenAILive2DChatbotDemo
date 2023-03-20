@@ -1,7 +1,7 @@
 const { BlobServiceClient } = require("@azure/storage-blob");
 const temp = require('temp');
 const fs = require('fs');
-const { textToSpeech } = require('./azure-cognitiveservices-speech');
+const { textToSpeech } = require('./textToSpeech');
 
 const speechRegion = process.env.ttsregion;
 const ttsapikey = process.env.ttsapikey;

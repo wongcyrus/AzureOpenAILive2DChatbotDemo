@@ -31,7 +31,7 @@ module.exports = async function (context, req) {
         context.log(res.data);
 
         const s = body.prompt.split(`<|im_end|>`);
-        const quertion = s[s.length - 2].replace("<|im_start|>\nUser\n", "");
+        const quertion = s[s.length - 2].replace("\n<|im_start|>User\n", "");
 
         const now = new Date();
         const ticks = "" + now.getTime();
