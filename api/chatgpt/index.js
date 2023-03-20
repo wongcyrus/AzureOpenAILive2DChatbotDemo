@@ -33,7 +33,7 @@ module.exports = async function (context, req) {
         const now = new Date();
         var ticks = ((now.getTime() * 10000) + 621355968000000000);
         const chatEntity = {
-            partitionKey: getEmail(res),
+            partitionKey: getEmail(req),
             rowKey: ticks,
             student: body.prompt,
             chatbot: res.data.choices[0].text,
