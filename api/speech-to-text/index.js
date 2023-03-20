@@ -25,15 +25,16 @@ module.exports = async function (context, req) {
     let body = req.body;
 
     try {
+        const bodyBuffer = new Uint8Array(Buffer.from(req.body, 'binary'));
 
-        const bodyBuffer = Buffer.from(req.body);
+        // const bodyBuffer = Buffer.from(req.body);
         // const boundary = multipart.getBoundary(req.headers["content-type"]);
         // const parts = multipart.Parse(bodyBuffer, boundary);
 
         const email = getEmail(req);
         const blobName = email.replace(/[^a-zA-Z0-9 ]/g, '') + "-stt.wav";
         const blockBlobClient = containerClient.getBlockBlobClient(blobName);
-        const uploadBlobResponse = await blockBlobClient.uploadData(bodyBuffer);
+        const uploadBlobResponse = await blockBlobClient.createBlockBlobFromStream(bodyBuffer);
         context.log(`Upload block blob ${blobName} successfully`, uploadBlobResponse.requestId);
 
         const headers = {
