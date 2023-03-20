@@ -34,13 +34,13 @@ module.exports = async function (context, req) {
         const ticks = BigInt(now.getTime());
         const email = getEmail(req);
         const chatEntity = {
-            partitionKey: email.replace(/[^a-zA-Z0-9 ]/g, ''),
-            rowKey: ticks,
-            email: email,
-            student: body.prompt,
-            chatbot: res.data.choices[0].text,
-            tokens: res.data.usage.total_tokens,
-            time: now.toUTCString()
+            PartitionKey: email.replace(/[^a-zA-Z0-9 ]/g, ''),
+            RowKey: ticks,
+            Email: email,
+            Student: body.prompt,
+            Chatbot: res.data.choices[0].text,
+            Tokens: res.data.usage.total_tokens,
+            At: now
         };
         context.log(chatEntity);
         await chatHistoryTableClient.createEntity(chatEntity);
