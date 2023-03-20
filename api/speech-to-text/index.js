@@ -1,8 +1,5 @@
 const { BlobServiceClient } = require("@azure/storage-blob");
 const axios = require('axios');
-const temp = require('temp');
-const fs = require('fs');
-const multipart = require("parse-multipart");
 
 const speechRegion = process.env.speechRegion;
 const ttsApiKey = process.env.ttsApiKey;
@@ -44,7 +41,8 @@ module.exports = async function (context, req) {
         }
         const res = await axios.post(
             `https://${speechRegion}.stt.speech.microsoft.com/speech/recognition/conversation/cognitiveservices/v1?language=${language}`,
-            body, { headers: headers });
+            bodyBuffer, { headers: headers });
+
         context.res = {
             headers: { 'Content-Type': 'application/json' },
             body: res.body
