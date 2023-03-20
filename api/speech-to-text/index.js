@@ -1,10 +1,11 @@
-const ttsregion = "TTSREGION";
-const ttsapikey = "TTSAPIKEY";
+
+const speechRegion = process.env.speechRegion;
+const ttsapikey = process.env.ttsApiKey;
+
 
 module.exports = async function (context, req) {
     const language = req.query.language;
-    let body = req.body;   
-
+    let body = req.body;
 
     try {
         const headers = {
@@ -13,7 +14,7 @@ module.exports = async function (context, req) {
             'Ocp-Apim-Subscription-Key': ttsapikey,
         }
         const res = await axios.post(
-            `https://${ttsregion}.stt.speech.microsoft.com/speech/recognition/conversation/cognitiveservices/v1?language=${language}`,
+            `https://${speechRegion}.stt.speech.microsoft.com/speech/recognition/conversation/cognitiveservices/v1?language=${language}`,
             body, { headers: headers });
         context.res = {
             headers: { 'Content-Type': 'application/json' },

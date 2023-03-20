@@ -31,7 +31,7 @@ module.exports = async function (context, req) {
         context.log(res.data);
 
         const now = new Date();
-        const ticks = ((now.getTime() * 10000) + 621355968000000000n);
+        const ticks = now.getTime();
         const email = getEmail(req);
         const chatEntity = {
             partitionKey: email.replace(/[^a-zA-Z0-9 ]/g, ''),
