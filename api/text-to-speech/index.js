@@ -3,8 +3,8 @@ const temp = require('temp');
 const fs = require('fs');
 const { textToSpeech } = require('./textToSpeech');
 
-const speechRegion = process.env.ttsregion;
-const ttsapikey = process.env.ttsapikey;
+const speechRegion = process.env.speechRegion;
+const ttsApiKey = process.env.ttsApiKey;
 const storageAccountConnectionString = process.env.chatStorageAccountConnectionString;
 
 const blobServiceClient = BlobServiceClient.fromConnectionString(storageAccountConnectionString);
@@ -24,7 +24,7 @@ module.exports = async function (context, req) {
     context.log(body);
 
     const tempName = temp.path({ suffix: '.wav' });
-    await textToSpeech(ttsapikey, speechRegion, body, tempName);
+    await textToSpeech(ttsApiKey, speechRegion, body, tempName);
 
     const email = getEmail(req);
     const blobName = email.replace(/[^a-zA-Z0-9 ]/g, '') + ".wav";
