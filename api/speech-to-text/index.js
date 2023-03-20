@@ -26,7 +26,7 @@ module.exports = async function (context, req) {
     try {
 
         const bodyBuffer = Buffer.from(req.body);        
-        const boundary = multipart.getBoundary(request.headers['content-type']);       
+        const boundary = multipart.getBoundary(req.headers['content-type']);       
         const parts = multipart.Parse(bodyBuffer, boundary);
 
         const email = getEmail(req);
