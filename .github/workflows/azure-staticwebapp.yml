@@ -54,6 +54,7 @@ jobs:
         with:
           node-version: 16
           cache: npm
+          cache-dependency-path: api/package-lock.json
       - run: cd api/ && npm install
 
       - name: Build And Deploy
