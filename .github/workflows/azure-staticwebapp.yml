@@ -50,9 +50,10 @@ jobs:
           sed -i "s/AADB2C_PROVIDER_CLIENT_ID/${{ secrets.AADB2C_PROVIDER_CLIENT_ID }}/g" app_location/staticwebapp.config.json
           sed -i "s/AADB2C_PROVIDER_CLIENT_SECRET/${{ secrets.AADB2C_PROVIDER_CLIENT_SECRET }}/g" app_location/staticwebapp.config.json
 
-      - uses: actions/setup-node@v2
+      - uses: actions/setup-node@v3
         with:
           node-version: 16
+          cache: npm
       - run: cd api/ && npm install
 
       - name: Build And Deploy
