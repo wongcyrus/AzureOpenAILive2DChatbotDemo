@@ -27,7 +27,7 @@ module.exports = async function (context, req) {
     await textToSpeech(ttsApiKey, speechRegion, body, tempName);
 
     const email = getEmail(req);
-    const blobName = email.replace(/[^a-zA-Z0-9 ]/g, '') + ".wav";
+    const blobName = email.replace(/[^a-zA-Z0-9 ]/g, '') + "-tts.wav";
     const blockBlobClient = containerClient.getBlockBlobClient(blobName);
     const uploadBlobResponse = await blockBlobClient.uploadFile(tempName);
     context.log(`Upload block blob ${blobName} successfully`, uploadBlobResponse.requestId);
