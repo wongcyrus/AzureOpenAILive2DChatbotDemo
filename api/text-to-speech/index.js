@@ -8,7 +8,7 @@ const ttsApiKey = process.env.ttsApiKey;
 const storageAccountConnectionString = process.env.chatStorageAccountConnectionString;
 
 const blobServiceClient = BlobServiceClient.fromConnectionString(storageAccountConnectionString);
-const containerClient = blobServiceClient.getContainerClient("$web");
+const containerClient = blobServiceClient.getContainerClient("voice");
 
 
 const getEmail = (req) => {
