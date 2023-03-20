@@ -35,7 +35,7 @@ module.exports = async function (context, req) {
         const uploadBlobResponse = await blockBlobClient.uploadData(bodyBuffer);
         context.log(`Upload block blob ${blobName} successfully`, uploadBlobResponse.requestId);
 
-        const res = speechToText(ttsApiKey, speechRegion, tempName, language);
+        const res = await speechToText(ttsApiKey, speechRegion, tempName, language);
         context.log(res);
         // const headers = {
         //     'Content-Type': 'audio/wav; codecs=audio/pcm; samplerate=16000',
