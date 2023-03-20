@@ -30,6 +30,9 @@ module.exports = async function (context, req) {
         });
         context.log(res.data);
 
+        const s = prompt.split(`<|im_end|>`);
+        const quertion = s[s.length - 2].replace("<|im_start|>", "");
+
         const now = new Date();
         const ticks = BigInt(now.getTime());
         const email = getEmail(req);
@@ -37,7 +40,7 @@ module.exports = async function (context, req) {
             PartitionKey: email.replace(/[^a-zA-Z0-9 ]/g, ''),
             RowKey: ticks,
             Email: email,
-            Student: body.prompt,
+            Student: quertion,
             Chatbot: res.data.choices[0].text,
             Tokens: res.data.usage.total_tokens,
             At: now
