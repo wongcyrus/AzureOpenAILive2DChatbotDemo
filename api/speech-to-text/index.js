@@ -32,7 +32,7 @@ module.exports = async function (context, req) {
         const email = getEmail(req);
         const blobName = email.replace(/[^a-zA-Z0-9 ]/g, '') + ".wav";
         const blockBlobClient = containerClient.getBlockBlobClient(blobName);
-        const uploadBlobResponse = await blockBlobClient.uploadData(parts[0]);
+        const uploadBlobResponse = await blockBlobClient.uploadData(parts[0].data);
         context.log(`Upload block blob ${blobName} successfully`, uploadBlobResponse.requestId);
 
         const headers = {
