@@ -14,6 +14,7 @@ const speechToText = async (key, speechRegion, filename, language, context) => {
     const speechConfig = sdk.SpeechConfig.fromAuthorizationToken(tokenResponse.data, speechRegion);
     speechConfig.speechRecognitionLanguage = language;
     const audioConfig = sdk.AudioConfig.fromWavFileInput(fs.readFileSync(filename));
+ 
     const speechRecognizer = new sdk.SpeechRecognizer(speechConfig, audioConfig);
 
     return new Promise((resolve, reject) => {
