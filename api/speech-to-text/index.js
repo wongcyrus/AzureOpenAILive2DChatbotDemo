@@ -1,5 +1,6 @@
 const { BlobServiceClient } = require("@azure/storage-blob");
 const { speechToText } = require("./speechToText");
+const { getEmail, blockNonMember } = require("./checkMember");
 const temp = require('temp');
 const fs = require('fs');
 
@@ -10,25 +11,18 @@ const storageAccountConnectionString = process.env.chatStorageAccountConnectionS
 const blobServiceClient = BlobServiceClient.fromConnectionString(storageAccountConnectionString);
 const containerClient = blobServiceClient.getContainerClient("voice");
 
-const getEmail = (req) => {
-    const header = req.headers['x-ms-client-principal'];
-    const encoded = Buffer.from(header, 'base64');
-    const decoded = encoded.toString('ascii');
-    const clientPrincipal = JSON.parse(decoded);
-    return clientPrincipal.userDetails;
-}
 
 
 module.exports = async function (context, req) {
+    const email = getEmail(req);
+    await blockNonMember(email, context);
     const language = req.query.language;
 
     try {
         const bodyBuffer = new Uint8Array(Buffer.from(req.body, 'binary'));
-
         const tempName = temp.path({ suffix: '.wav' });
         fs.writeFileSync(tempName, bodyBuffer);
 
-        const email = getEmail(req);
         const blobName = email.replace(/[^a-zA-Z0-9 ]/g, '') + "-stt.wav";
         const blockBlobClient = containerClient.getBlockBlobClient(blobName);
         const uploadBlobResponse = await blockBlobClient.uploadData(bodyBuffer);

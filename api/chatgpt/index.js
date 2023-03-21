@@ -1,6 +1,6 @@
 const axios = require('axios');
 const { TableClient } = require("@azure/data-tables");
-const { isMember } = require("./isMember");
+const { getEmail, blockNonMember } = require("./checkMember");
 
 const openaiurl = `https://eastus.api.cognitive.microsoft.com/openai/deployments/${process.env.openAiCognitiveDeploymentName}/completions?api-version=2022-12-01`;
 const openaipikey = process.env.openAiCognitiveAccount;
@@ -8,25 +8,9 @@ const chatStorageAccountConnectionString = process.env.chatStorageAccountConnect
 
 const chatHistoryTableClient = TableClient.fromConnectionString(chatStorageAccountConnectionString, "chatHistory");
 
-const getEmail = (req) => {
-    const header = req.headers['x-ms-client-principal'];
-    const encoded = Buffer.from(header, 'base64');
-    const decoded = encoded.toString('ascii');
-    const clientPrincipal = JSON.parse(decoded);
-    return clientPrincipal.userDetails;
-}
-
 module.exports = async function (context, req) {
     const email = getEmail(req);
-
-    if (!await isMember(email, context)) {
-        context.res = {
-            status: 401,
-            headers: { 'Content-Type': 'application/json' },
-            body: "Unauthorized"
-        };
-        context.done();
-    }
+    await blockNonMember(email, context);
 
     context.log("Chat");
     const body = req.body;
@@ -47,7 +31,6 @@ module.exports = async function (context, req) {
 
         const now = new Date();
         const ticks = "" + now.getTime();
-
 
         const chatEntity = {
             PartitionKey: email,
