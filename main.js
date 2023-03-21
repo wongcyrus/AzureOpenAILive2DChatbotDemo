@@ -30,9 +30,12 @@ $(document).ready(async () => {
   try {
     const user = await getUser();
     console.log(user);
+    $(".member").show();
+    $(".nonmember").hide();
   }
   catch (ex) {
-    $(".nonmember").hide();
+    $(".member").hide();
+    $(".nonmember").show();
   }
 
   const md = markdownit({

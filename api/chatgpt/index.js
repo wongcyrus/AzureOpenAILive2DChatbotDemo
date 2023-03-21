@@ -1,5 +1,6 @@
 const axios = require('axios');
 const { TableClient } = require("@azure/data-tables");
+const { isMember } = require("./isMember");
 
 const openaiurl = `https://eastus.api.cognitive.microsoft.com/openai/deployments/${process.env.openAiCognitiveDeploymentName}/completions?api-version=2022-12-01`;
 const openaipikey = process.env.openAiCognitiveAccount;
@@ -16,6 +17,17 @@ const getEmail = (req) => {
 }
 
 module.exports = async function (context, req) {
+    const email = getEmail(req);
+
+    if (!isMember(email)) {
+        context.res = {
+            status: 401,
+            headers: { 'Content-Type': 'application/json' },
+            body: "Unauthorized"
+        };
+        context.done();
+    }
+
     context.log("Chat");
     const body = req.body;
     context.log(body);
@@ -35,7 +47,7 @@ module.exports = async function (context, req) {
 
         const now = new Date();
         const ticks = "" + now.getTime();
-        const email = getEmail(req);
+
 
         const chatEntity = {
             PartitionKey: email.replace(/[^a-zA-Z0-9 ]/g, ''),
