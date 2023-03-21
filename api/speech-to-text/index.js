@@ -36,18 +36,10 @@ module.exports = async function (context, req) {
 
         const res = await speechToText(ttsApiKey, speechRegion, tempName, language, context);
         context.log(res);
-        // const headers = {
-        //     'Content-Type': 'audio/wav; codecs=audio/pcm; samplerate=16000',
-        //     'Accept': 'application/json;text/xml',
-        //     'Ocp-Apim-Subscription-Key': ttsApiKey,
-        // }
-        // const res = await axios.post(
-        //     `https://${speechRegion}.stt.speech.microsoft.com/speech/recognition/conversation/cognitiveservices/v1?language=${language}`,
-        //     bodyBuffer, { headers: headers });
 
         context.res = {
             headers: { 'Content-Type': 'application/json' },
-            body: res
+            body: { DisplayText: res.privText }
         };
         context.done();
 
