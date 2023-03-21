@@ -50,7 +50,7 @@ module.exports = async function (context, req) {
 
 
         const chatEntity = {
-            PartitionKey: email.replace(/[^a-zA-Z0-9 ]/g, ''),
+            PartitionKey: email,
             RowKey: ticks,
             Email: email,
             Student: quertion,

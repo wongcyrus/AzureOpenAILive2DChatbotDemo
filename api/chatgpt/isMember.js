@@ -6,7 +6,7 @@ const usersTableClient = TableClient.fromConnectionString(chatStorageAccountConn
 const isMember = async (email) => {
     try {
         const user = await usersTableClient.getEntity(email, email);
-        return user;
+        return user.partitionKey ? true : false;
     } catch (__) {
         return false;
     }
