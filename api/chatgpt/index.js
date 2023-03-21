@@ -19,7 +19,7 @@ const getEmail = (req) => {
 module.exports = async function (context, req) {
     const email = getEmail(req);
 
-    if (!isMember(email)) {
+    if (!await isMember(email, context)) {
         context.res = {
             status: 401,
             headers: { 'Content-Type': 'application/json' },
