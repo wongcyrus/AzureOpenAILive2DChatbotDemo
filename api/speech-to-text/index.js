@@ -1,5 +1,4 @@
 const { BlobServiceClient } = require("@azure/storage-blob");
-const axios = require('axios');
 const { speechToText } = require("./speechToText");
 const temp = require('temp');
 const fs = require('fs');
@@ -35,7 +34,7 @@ module.exports = async function (context, req) {
         const uploadBlobResponse = await blockBlobClient.uploadData(bodyBuffer);
         context.log(`Upload block blob ${blobName} successfully`, uploadBlobResponse.requestId);
 
-        const res = await speechToText(ttsApiKey, speechRegion, tempName, language);
+        const res = await speechToText(ttsApiKey, speechRegion, tempName, language, context);
         context.log(res);
         // const headers = {
         //     'Content-Type': 'audio/wav; codecs=audio/pcm; samplerate=16000',
@@ -48,7 +47,7 @@ module.exports = async function (context, req) {
 
         context.res = {
             headers: { 'Content-Type': 'application/json' },
-            body: res.body
+            body: res
         };
         context.done();
 

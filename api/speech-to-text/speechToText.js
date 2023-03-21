@@ -2,7 +2,7 @@ const sdk = require('microsoft-cognitiveservices-speech-sdk');
 const fs = require('fs');
 const axios = require('axios');
 
-const speechToText = async (key, speechRegion, filename, language) => {
+const speechToText = async (key, speechRegion, filename, language, context) => {
     const headers = {
         headers: {
             'Ocp-Apim-Subscription-Key': key,
@@ -20,21 +20,21 @@ const speechToText = async (key, speechRegion, filename, language) => {
         speechRecognizer.recognizeOnceAsync(result => {
             switch (result.reason) {
                 case sdk.ResultReason.RecognizedSpeech:
-                    console.log(`RECOGNIZED: Text=${result.text}`);
+                    context.log(`RECOGNIZED: Text=${result.text}`);
                     resolve(result);
                     break;
                 case sdk.ResultReason.NoMatch:
-                    console.log("NOMATCH: Speech could not be recognized.");
+                    context.log("NOMATCH: Speech could not be recognized.");
                     reject("NOMATCH: Speech could not be recognized.");
                     break;
                 case sdk.ResultReason.Canceled:
                     const cancellation = sdk.CancellationDetails.fromResult(result);
-                    console.log(`CANCELED: Reason=${cancellation.reason}`);
+                    context.log(`CANCELED: Reason=${cancellation.reason}`);
 
                     if (cancellation.reason == sdk.CancellationReason.Error) {
-                        console.log(`CANCELED: ErrorCode=${cancellation.ErrorCode}`);
-                        console.log(`CANCELED: ErrorDetails=${cancellation.errorDetails}`);
-                        console.log("CANCELED: Did you set the speech resource key and region values?");
+                        context.log(`CANCELED: ErrorCode=${cancellation.ErrorCode}`);
+                        context.log(`CANCELED: ErrorDetails=${cancellation.errorDetails}`);
+                        context.log("CANCELED: Did you set the speech resource key and region values?");
                     }
                     reject(cancellation);
                     break;

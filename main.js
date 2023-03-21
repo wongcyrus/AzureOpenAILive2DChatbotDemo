@@ -32,7 +32,7 @@ $(document).ready(async () => {
     console.log(user);
   }
   catch (ex) {
-    $("#logout").hide();
+    $(".nonmember").hide();
   }
 
   const md = markdownit({
