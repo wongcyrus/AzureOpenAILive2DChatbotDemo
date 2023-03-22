@@ -1,6 +1,6 @@
 const axios = require('axios');
 const { TableClient } = require("@azure/data-tables");
-const { getEmail, blockNonMember } = require("./checkMember");
+const { getEmail, blockNonMember, isOverLimit } = require("./checkMember");
 
 const openaiurl = `https://eastus.api.cognitive.microsoft.com/openai/deployments/${process.env.openAiCognitiveDeploymentName}/completions?api-version=2022-12-01`;
 const openaipikey = process.env.openAiCognitiveAccount;
@@ -11,6 +11,16 @@ const chatHistoryTableClient = TableClient.fromConnectionString(chatStorageAccou
 module.exports = async function (context, req) {
     const email = getEmail(req);
     await blockNonMember(email, context);
+
+    if (await isOverLimit(email)) {
+        context.res.json({           
+            "choices": [
+                {
+                    "text": "Used up your daily limit. Please try again tomorrow.",
+                }
+            ]
+        });
+    }
 
     context.log("Chat");
     const body = req.body;
