@@ -38,6 +38,7 @@ jobs:
       pull-requests: write # for Azure/static-web-apps-deploy to comment on PRs
     if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.action != 'closed')
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     name: Build and Deploy Job
     steps:
       - uses: actions/checkout@v3
