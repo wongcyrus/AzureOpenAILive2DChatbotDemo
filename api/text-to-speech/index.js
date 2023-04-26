@@ -1,19 +1,24 @@
 const { BlobServiceClient } = require("@azure/storage-blob");
 const { textToSpeech } = require('./textToSpeech');
-const { getEmail, blockNonMember } = require("./checkMember");
+const { getEmail, isMember } = require("../checkMember");
+const { setErrorJson } = require("../contextHelper");
 const temp = require('temp');
 const fs = require('fs');
 
 const speechRegion = process.env.speechRegion;
 const ttsApiKey = process.env.ttsApiKey;
-const storageAccountConnectionString = process.env.chatStorageAccountConnectionString;
+const chatStorageAccountConnectionString = process.env.chatStorageAccountConnectionString;
 
-const blobServiceClient = BlobServiceClient.fromConnectionString(storageAccountConnectionString);
+const blobServiceClient = BlobServiceClient.fromConnectionString(chatStorageAccountConnectionString);
 const containerClient = blobServiceClient.getContainerClient("voice");
 
 module.exports = async function (context, req) {
     const email = getEmail(req);
-    await blockNonMember(email, context);
+
+    if (!await isMember(email, context)) {
+        setErrorJson(context, "Unauthorized", 401);
+        return;
+    }
 
     let body = req.body;
     context.log(body);
@@ -34,5 +39,4 @@ module.exports = async function (context, req) {
         isRaw: true,
         body: fs.readFileSync(tempName)
     };
-    context.done();
 }

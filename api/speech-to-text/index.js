@@ -1,21 +1,25 @@
 const { BlobServiceClient } = require("@azure/storage-blob");
 const { speechToText } = require("./speechToText");
-const { getEmail, blockNonMember } = require("./checkMember");
+const { getEmail, isMember } = require("../checkMember");
+const { setJson, setErrorJson } = require("../contextHelper");
 const temp = require('temp');
 const fs = require('fs');
 
 const speechRegion = process.env.speechRegion;
 const ttsApiKey = process.env.ttsApiKey;
-const storageAccountConnectionString = process.env.chatStorageAccountConnectionString;
+const chatStorageAccountConnectionString = process.env.chatStorageAccountConnectionString;
 
-const blobServiceClient = BlobServiceClient.fromConnectionString(storageAccountConnectionString);
+const blobServiceClient = BlobServiceClient.fromConnectionString(chatStorageAccountConnectionString);
 const containerClient = blobServiceClient.getContainerClient("voice");
-
 
 
 module.exports = async function (context, req) {
     const email = getEmail(req);
-    await blockNonMember(email, context);
+    if (!await isMember(email, context)) {
+        setErrorJson(context, "Unauthorized", 401);
+        return;
+    }
+
     const language = req.query.language;
 
     try {
@@ -31,16 +35,8 @@ module.exports = async function (context, req) {
         const res = await speechToText(ttsApiKey, speechRegion, tempName, language, context);
         context.log(res);
 
-        context.res = {
-            headers: { 'Content-Type': 'application/json' },
-            body: { DisplayText: res.privText }
-        };
-        context.done();
-
+        setJson(context, { DisplayText: res.privText });
     } catch (ex) {
-        context.log(ex);
-        context.res.json({
-            text: "error" + ex
-        });
+        setErrorJson(context, ex, 500);
     }
 }

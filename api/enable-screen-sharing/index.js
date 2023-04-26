@@ -1,17 +1,24 @@
 const { TableClient } = require("@azure/data-tables");
-const { getEmail, blockNonTeacherMember } = require("./checkMember");
-
+const { BlobServiceClient } = require("@azure/storage-blob");
+const { getEmail, isTeacher } = require("../checkMember");
+const { setJson, setErrorJson } = require("../contextHelper");
 
 const chatStorageAccountConnectionString = process.env.chatStorageAccountConnectionString;
 
 const classesTableClient = TableClient.fromConnectionString(chatStorageAccountConnectionString, "classes");
 const sessionsTableClient = TableClient.fromConnectionString(chatStorageAccountConnectionString, "sessions");
 
+const blobServiceClient = BlobServiceClient.fromConnectionString(chatStorageAccountConnectionString);
+const containerClient = blobServiceClient.getContainerClient("screen");
+
 
 module.exports = async function (context, req) {
 
     const teacherEmail = getEmail(req);
-    await blockNonTeacherMember(teacherEmail, context);
+    if (!await isTeacher(teacherEmail, context)) {
+        setErrorJson(context, "Unauthorized", 401);
+        return;
+    }
 
     const classId = req.query.classId;
 
@@ -45,7 +52,15 @@ module.exports = async function (context, req) {
         );
     }
 
-    const emails = entities.map(entity => entity.RowKey);
+    const emails = entities.map(entity => entity.rowKey);
 
-    context.res.json({ message: "ok", emails });
+    //delete cached screens
+    await Promise.all(emails.map(async studentEmail => {
+        const blobName = studentEmail.replace(/[^a-zA-Z0-9 ]/g, '_') + ".jpeg";
+        const blobClient = containerClient.getBlobClient(blobName);
+        await blobClient.deleteIfExists();
+    }));
+
+    const results = entities.map(entity => ({ email: entity.rowKey, name: entity.Name }));
+    setJson(context, results);
 }

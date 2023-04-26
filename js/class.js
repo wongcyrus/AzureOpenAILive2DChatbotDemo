@@ -9,6 +9,7 @@ $(document).ready(async () => {
     try {
         const user = await getUser();
         console.log(user);
+        $("#logout").html("Logout (" + user.userDetails + ")");
         $(".member").show();
         $(".nonmember").hide();
     }
@@ -49,7 +50,7 @@ $(document).ready(async () => {
             const img = $(`
             <div class="col-sm-6 col-md-4 mb-3">
                 <h6>${name}</h6>
-                <a href="${sasUrl}" target="_blank" rel="noopener noreferrer"><img src="${sasUrl}" alt="${email}" class="fluid img-thumbnail"/><a/>                
+                <a href="${sasUrl}" target="_blank" rel="noopener noreferrer" class="studentScreen"><img src="${sasUrl}" alt="${name} ${email}" class="fluid img-thumbnail"/><a/>                
             </div>`);
             screens.append(img);
         });
@@ -73,4 +74,12 @@ $(document).ready(async () => {
         }
     });
 
+    $('body').on('click', 'a.studentScreen', (evt)=> {
+        evt.preventDefault();
+        const student = $(evt.target).attr("alt");
+        const sasUrl = $(evt.target).attr("src");
+        $("#modal-title").html(student);
+        $('#modal-body').html(`<img src="${sasUrl}" alt="${sasUrl}" class="fluid img-thumbnail"/>`);
+        $('#screenModal').modal('show');
+    });
 });

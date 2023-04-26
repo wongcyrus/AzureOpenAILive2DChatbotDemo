@@ -1,6 +1,8 @@
 const axios = require('axios');
 const { TableClient } = require("@azure/data-tables");
-const { getEmail, blockNonMember, todayUsage, isOverLimit, getUsageLimit } = require("./checkMember");
+const { getEmail, isMember, todayUsage, isOverLimit, getUsageLimit } = require("../checkMember");
+const { setJson, setErrorJson } = require("../contextHelper");
+
 const { calculateCost } = require("./price");
 
 
@@ -12,37 +14,47 @@ const chatHistoryTableClient = TableClient.fromConnectionString(chatStorageAccou
 module.exports = async function (context, req) {
 
     const email = getEmail(req);
-    await blockNonMember(email, context);
+
+    if (!await isMember(email, context)) {
+        setJson(context, {
+            "choices": [
+                {
+                    "message": { "content": "You are not member!" }
+                }
+            ]
+        });
+        return;
+    }
 
     const limit = await getUsageLimit(email);
     const tokenUsageCost = await todayUsage(email);
     if (isOverLimit(email, tokenUsageCost, limit, context)) {
-        context.res.json({
+        setJson(context, {
             "choices": [
                 {
-                    "text": "Used up your daily limit. Please try again tomorrow.",
+                    "message": { "content": "Used up your daily limit. Please try again tomorrow." }
                 }
             ]
         });
+        return;
     }
 
-    context.log("Chat");
-    let body = { ...req.body };    
+    let body = { ...req.body };
+    const taskId = body.taskId ?? "";
+    delete body.taskId;
     const model = body.model;
     delete body.model;
     if (!process.env.openAiCognitiveDeploymentNames.split(",").find(element => model == element)) {
-        context.res.json({
+        setErrorJson(context, {
             "choices": [
                 {
                     "text": "Invalid model name!",
                 }
             ]
-        });
+        }, 429);
     }
 
     try {
-
-
         let openaiurl;
         if (model.startsWith('gpt-')) {
             const apiVersion = "2023-03-15-preview";
@@ -83,29 +95,34 @@ module.exports = async function (context, req) {
 
         const cost = calculateCost(model, res.data.usage.completion_tokens || 0, res.data.usage.prompt_tokens);
         const chatEntity = {
-            PartitionKey: email,
-            RowKey: ticks,
-            Email: email,
-            User: question,
-            Chatbot: res.data.choices[0].message.content,
-            Model: model,
-            CompletionTokens: res.data.usage.completion_tokens,
-            PromptTokens: res.data.usage.prompt_tokens,
-            TotalTokens: res.data.usage.total_tokens,
-            Cost: cost
+            taskId,
+            ... {
+                PartitionKey: email,
+                RowKey: ticks,
+                Email: email,
+                User: question,
+                Chatbot: res.data.choices[0].message.content,
+                Model: model,
+                CompletionTokens: res.data.usage.completion_tokens,
+                PromptTokens: res.data.usage.prompt_tokens,
+                TotalTokens: res.data.usage.total_tokens,
+                Cost: cost
+            }, ...body
         };
+        delete chatEntity['messages'];
+        delete chatEntity['prompt'];
+
         context.log(chatEntity);
         await chatHistoryTableClient.createEntity(chatEntity);
 
         let response = { ...res.data };
         response['cost'] = cost;
         response['left'] = limit - (tokenUsageCost + cost);
-        context.res.json(response);
+
+        setJson(context, response);
 
     } catch (ex) {
         context.log(ex);
-        context.res.json({
-            text: "" + ex
-        });
+        setErrorJson(context, ex);
     }
 }

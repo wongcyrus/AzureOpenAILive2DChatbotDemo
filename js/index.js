@@ -30,12 +30,28 @@ $(document).ready(async () => {
   try {
     const user = await getUser();
     console.log(user);
+    $("#logout").html("Logout (" + user.userDetails + ")");
     $(".member").show();
     $(".nonmember").hide();
   }
   catch (ex) {
     $(".member").hide();
     $(".nonmember").show();
+  }
+
+  function getUrlVars() {
+    let vars = [], hash;
+    let hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
+    for (let i = 0; i < hashes.length; i++) {
+      hash = hashes[i].split('=');
+      vars.push(hash[0]);
+      vars[hash[0]] = hash[1];
+    }
+    return vars;
+  }
+  const parameters = getUrlVars();
+  if (parameters["taskId"]) {
+    $("#taskId").val(parameters["taskId"]);
   }
 
   const md = markdownit({
@@ -294,8 +310,7 @@ $(document).ready(async () => {
     canvas.height = 1080;
     canvas.getContext('2d').drawImage(videoElem, 0, 0);
     const img = canvas.toDataURL('image/jpeg');
-    console.log(img);
-    $.post("/api/screen", img, (result) => {
+    $.post("/api/screens", img, (result) => {
       console.log(result);
     }).fail((err) => {
       console.log(err);
