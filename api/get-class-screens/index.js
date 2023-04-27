@@ -7,7 +7,7 @@ const { setJson, setErrorJson } = require("../contextHelper");
 const chatStorageAccountConnectionString = process.env.chatStorageAccountConnectionString;
 
 const blobServiceClient = BlobServiceClient.fromConnectionString(chatStorageAccountConnectionString);
-const containerClient = blobServiceClient.getContainerClient("screen");
+const containerClient = blobServiceClient.getContainerClient("screens");
 const classesTableClient = TableClient.fromConnectionString(chatStorageAccountConnectionString, "classes");
 
 

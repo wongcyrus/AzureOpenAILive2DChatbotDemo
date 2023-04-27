@@ -9,7 +9,7 @@ const classesTableClient = TableClient.fromConnectionString(chatStorageAccountCo
 const sessionsTableClient = TableClient.fromConnectionString(chatStorageAccountConnectionString, "sessions");
 
 const blobServiceClient = BlobServiceClient.fromConnectionString(chatStorageAccountConnectionString);
-const containerClient = blobServiceClient.getContainerClient("screen");
+const containerClient = blobServiceClient.getContainerClient("screens");
 
 
 module.exports = async function (context, req) {

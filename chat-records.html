@@ -23,12 +23,22 @@
                 <form>
                     <div class="form-row">
                         <div class="col">
-                            <label for="email" class="col-form-label">Email:</label>
-                            <input type="email" class="form-control" placeholder="Email" id="email" />
+                            <label for="studentClass" class="col-form-label">Class:</label>
+                            <input type="text" class="form-control" placeholder="studentClass" id="studentClass"
+                                name="studentClass" />
+                        </div>
+                        <div class="col">
+                            <label for="email" class="col-form-label">Students:</label>
+                            <select name="email" id="email" class="form-control"></select>
+                        </div>
+                        <div class="col">
+                            <label for="assignmentId" class="col-form-label">Assignment ID:</label>
+                            <input type="text" class="form-control" placeholder="Assignment Id" id="assignmentId"
+                                name="assignmentId" />
                         </div>
                         <div class="col">
                             <label for="taskId" class="col-form-label">Task ID:</label>
-                            <input type="text" class="form-control" placeholder="taskId" id="taskId" />
+                            <input type="text" class="form-control" placeholder="taskId" id="taskId" name="taskId" />
                         </div>
                         <div class="col">
                             <label for="start" class="col-form-label">Start:</label>
@@ -41,22 +51,27 @@
                                 max="2033-01-01T00:00" class="form-control">
                         </div>
                         <div class="col">
-                            <div class="form-group">
-                                <label for="model">Model:</label>
-                                <select name="model" id="model" class="form-control">
-                                    <option value='text-ada-001'>text-ada-001</option>
-                                    <option value='text-curie-001'>text-curie-001</option>
-                                    <option value='text-davinci-002'>text-davinci-002</option>
-                                    <option value='code-davinci-002'>code-davinci-002</option>
-                                    <option value='text-davinci-003'>text-davinci-003</option>
-                                    <option value='gpt-35-turbo' selected="selected">gpt-35-turbo</option>
-                                    <option value='gpt-4-32k'>gpt-4-32k</option>
-                                    <option value='gpt-4'>gpt-4</option>
-                                </select>
-                            </div>
+                            <label for="model" class="col-form-label">Model:</label>
+                            <select name="model" id="model" class="form-control">
+                                <option value='text-ada-001'>text-ada-001</option>
+                                <option value='text-curie-001'>text-curie-001</option>
+                                <option value='text-davinci-002'>text-davinci-002</option>
+                                <option value='code-davinci-002'>code-davinci-002</option>
+                                <option value='text-davinci-003'>text-davinci-003</option>
+                                <option value='gpt-35-turbo' selected="selected">gpt-35-turbo</option>
+                                <option value='gpt-4-32k'>gpt-4-32k</option>
+                                <option value='gpt-4'>gpt-4</option>
+                            </select>
                         </div>
                         <div class=" col">
-                            <button type="submit" class="btn btn-primary" id="email-submit">Load</button>
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-primary m-1" id="email-submit">Get Chat
+                                    Records</button>
+                                <button type="submit" class="btn btn-danger m-1" id="grade-class-submit">Grade this
+                                    class</button>
+                                <button type="submit" class="btn btn-primary m-1" id="mark-report-submit">Mark
+                                    Report</button>
+                            </div>
                         </div>
                     </div>
                     <div class="form-row">
@@ -64,29 +79,39 @@
                             <div class="form-group">
                                 <label for="PromptTextarea">Prompt by <a
                                         href="https://github.com/janl/mustache.js/">mustache.js</a> </label>
-                                <button type="submit" class="btn btn-primary" id="comment-submit">Send</button>
-                                <textarea class="form-control" id="PromptTextarea" rows="10">
-Comments the following conversations between User and AI in 100 words:
+                                <textarea class="form-control" id="PromptTextarea" rows="11">
+Comments the following conversations between User and AI in 100 words.
+++++++++++++++++++++++++++++++++++++++++++++++++++
 {{#conversations}}
 User: {{User}}
 AI: {{Chatbot}}
 {{/conversations}}
+++++++++++++++++++++++++++++++++++++++++++++++++++
 Total Cost: {{totalCost}}
 Total Token: {{totalTokens}}
 Give a mark from 1-10 for the effectiveness of those conversations.
-Return JSON in following format:
+
+Response with JSON in the following format:
 {
 "marks": 1,
 "comments": ""
-}                                                                    
+}                                                                     
+                                                                                                                                      
                                 </textarea>
+                                <button type="submit" class="btn btn-primary" id="comment-submit">Grade with AI</button>
+                                <div class="alert alert-primary" role="alert" id="no-chat-record"
+                                    style="display: none;">
+                                    No chat record found.
+                                </div>
                             </div>
                         </div>
                         <div class="col">
                             <div class="form-group">
-                                <label for="ResponseTextarea">Response <span class="badge badge-light"
-                                        id="mark"></span></label>
-                                <textarea class="form-control" id="ResponseTextarea" rows="10"></textarea>
+                                <label for="mark">Mark</label>
+                                <input type="text" class="form-control" placeholder="mark" id="mark" />
+                                <label for="ResponseTextarea">Response</label>
+                                <textarea class="form-control" id="ResponseTextarea" rows="8"></textarea>
+                                <button type="submit" class="btn btn-primary" id="saveMark">Save</button>
                             </div>
                         </div>
                     </div>

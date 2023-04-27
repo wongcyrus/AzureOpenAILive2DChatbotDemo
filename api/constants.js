@@ -1,7 +1,7 @@
 const screenSharingPerMinute = 12;
 const screenSharingMaxSize = 0.5;
 const screenSharingMaxDuration = 3;
-const dailyCostLimit = 0.3;
+const dailyCostLimit = 0.5;
 
 const prices = {
     'text-ada-001': { "completion": { tokens: 1000, price: 0.0004 }, "prompt": { tokens: 1000, price: 0.0004 } },
