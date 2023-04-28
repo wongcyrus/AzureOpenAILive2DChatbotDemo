@@ -89,14 +89,18 @@ AI: {{Chatbot}}
 ++++++++++++++++++++++++++++++++++++++++++++++++++
 Total Cost: {{totalCost}}
 Total Token: {{totalTokens}}
-Give a mark from 1-10 for the effectiveness of those conversations.
+Give a mark from 1-10 for those conversations.
+Rule 1:  the effectiveness conversation for maximum 5 marks
+Rule 2:  the Total Token deduce 0.5 marks for every 1000 tokens. the initial marks is 3 and minimum is 0.
+Rule 3:  the Total Cost is less than 0.5 gives 2 marks.
+
+Explain the final mark in comments.
 
 Response with JSON in the following format:
 {
 "marks": 1,
 "comments": ""
-}                                                                     
-                                                                                                                                      
+}                               
                                 </textarea>
                                 <button type="submit" class="btn btn-primary" id="comment-submit">Grade with AI</button>
                                 <div class="alert alert-primary" role="alert" id="no-chat-record"
