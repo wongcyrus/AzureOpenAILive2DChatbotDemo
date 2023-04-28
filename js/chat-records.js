@@ -140,7 +140,7 @@ $(document).ready(async () => {
         const marked = JSON.parse(answer);
         if (marked.comments) {
             $("#mark").val(marked.marks);
-            $("#ResponseTextarea").html(marked.comments);
+            $("#ResponseTextarea").val(marked.comments);
             return marked;
         } else {
             $("#ResponseTextarea").html(answer);
