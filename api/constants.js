@@ -9,7 +9,8 @@ const prices = {
     'text-davinci-002': { "completion": { tokens: 1000, price: 0.0004 }, "prompt": { tokens: 1000, price: 0.02 } },
     'code-davinci-002': { "completion": { tokens: 1000, price: 0.0004 }, "prompt": { tokens: 1000, price: 0.10 } },
     'text-davinci-003': { "completion": { tokens: 1000, price: 0.0004 }, "prompt": { tokens: 1000, price: 0.0004 } },
-    'gpt-35-turbo': { "completion": { tokens: 1000, price: 0.0004 }, "prompt": { tokens: 1000, price: 0.002 } },
+    'gpt-35-turbo': { "completion": { tokens: 1000, price: 0.002 }, "prompt": { tokens: 1000, price: 0.0015 } },
+    'gpt-35-turbo-16k': { "completion": { tokens: 1000, price: 0.004 }, "prompt": { tokens: 1000, price: 0.003 } },
     'gpt-4-32k': { "completion": { tokens: 1000, price: 0.06 }, "prompt": { tokens: 1000, price: 0.12 } },
     'gpt-4': { "completion": { tokens: 1000, price: 0.03 }, "prompt": { tokens: 1000, price: 0.06 } },
 }
