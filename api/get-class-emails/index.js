@@ -19,20 +19,32 @@ module.exports = async function (context, req) {
 
     const classId = req.query.classId;
 
-    let continuationToken = null;
-    let pageEntities = undefined;
-    let entities = [];
-    do {
-        const page = await classesTableClient.listEntities({
-            queryOptions: {
-                filter: `PartitionKey eq '${classId}'`
-            }
-        }).byPage({ maxPageSize: 100, continuationToken: continuationToken }).next();
-        pageEntities = page.value;
-        continuationToken = pageEntities.continuationToken;
-        entities = entities.concat(pageEntities);
+    if (!classId) {
+        setJson(context, []);
+        return;
     }
-    while (continuationToken !== undefined);
+   
+    const classIds = classId.split(",");
+    const r = await Promise.all(classIds.map(async classId => {
+        let continuationToken = null;
+        let pageEntities = undefined;
+        let entities = [];
+        do {
+            const page = await classesTableClient.listEntities({
+                queryOptions: {
+                    filter: `PartitionKey eq '${classId}'`
+                }
+            }).byPage({ maxPageSize: 100, continuationToken: continuationToken }).next();
+            pageEntities = page.value;
+            if (!pageEntities) break;
+            continuationToken = pageEntities.continuationToken;
+            entities = entities.concat(pageEntities);
+        }
+        while (continuationToken !== undefined);
+        return entities
+    }));
+    const entities = r.flat();
+
     let students = entities.map(entity => ({ email: entity.rowKey, name: entity.Name }));
     students.sort((p1, p2) => p1.email.localeCompare(p2.email))
 
